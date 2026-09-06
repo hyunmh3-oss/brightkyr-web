@@ -1,0 +1,235 @@
+---
+import { NAV, LANGS, LANG_LABEL, prefix, type Lang } from '../i18n/nav';
+import { FOOTER, SNS } from '../i18n/footer';
+
+export interface Props {
+  lang: Lang;
+  title?: string;
+  /** 서브페이지 상단 제목 (메인은 비움) */
+  heading?: string;
+  /** 상단 경로 표시 (Home > 대분류 > 소분류) */
+  breadcrumb?: string;
+  description?: string;
+  /** 현재 경로 (언어 접두사 제외) — 언어 전환에 사용 */
+  path?: string;
+  contClass?: string;
+  /** 원본 .real-cont 의 인라인 style (소개·프로젝트 페이지는 padding-bottom:0) */
+  contStyle?: string;
+  bare?: boolean;
+}
+
+const {
+  lang,
+  title,
+  heading,
+  breadcrumb = '',
+  description,
+  path = '',
+  contClass = 'wide',
+  contStyle,
+  bare = false,
+} = Astro.props;
+
+const p = prefix(lang);
+const nav = NAV[lang];
+const foot = FOOTER[lang];
+
+const siteName = lang === 'ko' ? 'Bright Kyrgyzstan' : 'Bright Kyrgyzstan';
+const pageTitle = title ? `${title} | ${siteName}` : siteName;
+const site = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const here = Astro.url.pathname;
+
+const htmlLang = lang === 'ky' ? 'ky' : lang;
+
+/**
+ * 원본은 언어마다 CSS 폴더가 따로 있고(/css, /en/css, /ky/css, /ru/css)
+ * 내용도 서로 다르다. 키릴 문자가 길어서 메뉴 여백 등이 조정돼 있다.
+ * 불러오는 파일 목록도 언어마다 다르므로 원본 <head> 를 그대로 재현한다.
+ *   ko : reset layout doc board member shop
+ *   en : reset layout doc board
+ *   ky : reset layout doc board
+ *   ru : reset layout doc board member
+ */
+const cssBase = lang === 'ko' ? '/css' : `/${lang}/css`;
+const sheets: Record<Lang, string[]> = {
+  ko: ['reset', 'layout', 'doc', 'board', 'member', 'shop'],
+  en: ['reset', 'layout', 'doc', 'board'],
+  ky: ['reset', 'layout', 'doc', 'board'],
+  ru: ['reset', 'layout', 'doc', 'board', 'member'],
+};
+/** 본문 글꼴도 언어마다 다르게 불러온다 (원본 그대로, 전부 자체 호스팅) */
+const fontCss: Record<Lang, string[]> = {
+  ko: ['notosanskr', 'pretendard', 'nanumsquare', 'roboto'],
+  en: ['notosanskr', 'pretendard', 'notosans', 'roboto'],
+  ky: ['notosanskr', 'notosans', 'roboto'],
+  ru: ['notosanskr', 'notosans', 'roboto'],
+};
+---
+
+<!DOCTYPE html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <meta name="subject" content="Bright Kyrgyzstan" />
+    <meta name="description" content={description ?? 'Bright Kyrgyzstan'} />
+    <meta name="keywords" content="Bright Kyrgyzstan" />
+    <title>{pageTitle}</title>
+
+    <meta property="og:url" content={site + here} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description ?? 'Bright Kyrgyzstan'} />
+    <meta property="og:image" content={site + '/images/sns_link.png'} />
+    <link rel="canonical" href={site + here} />
+
+    {LANGS.map((l) => (
+      <link rel="alternate" hreflang={l} href={site + prefix(l) + (path || '/')} />
+    ))}
+
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    {fontCss[lang].map((f) => (
+      <link rel="stylesheet" type="text/css" href={`/css/${f}.css`} />
+    ))}
+    <link rel="stylesheet" type="text/css" href="/css/slick.css" />
+    <link rel="stylesheet" type="text/css" href="/css/swiper.min.css" />
+    {sheets[lang].map((s) => (
+      <link rel="stylesheet" type="text/css" href={`${cssBase}/${s}.css`} />
+    ))}
+    <link rel="stylesheet" type="text/css" href="/fancybox/source/jquery.fancybox.css" media="screen" />
+  </head>
+
+  <body>
+    <div id="skipToContent">
+      <a href="#container">본문 바로가기</a>
+      <a href="#gnb">주메뉴 바로가기</a>
+    </div>
+
+    <div id="wrapper">
+      <div id="header">
+        <div class="contain">
+          <h1 class="sitelogo">
+            <a href={p || '/'}><img src="/images/common/logo_x2.png" alt="Bright Kyrgyzstan" /></a>
+          </h1>
+
+          <div id="gnb" class="gnb">
+            <ul>
+              {nav.map((n) => (
+                <li>
+                  <a href={p + n.href}><span>{n.label}</span></a>
+                  {n.children && n.children.length > 0 && (
+                    <div class="submenu">
+                      <ul>
+                        {n.children.map((c) => (
+                          <li><a href={p + c.href}>{c.label}</a></li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="util">
+            <div class="language">
+              <a href="javascript:;">{LANG_LABEL[lang]}</a>
+              <ul>
+                {LANGS.map((l) => (
+                  <li><a href={prefix(l) + (path || '/')}>{LANG_LABEL[l]}</a></li>
+                ))}
+              </ul>
+            </div>
+            <div class="sns">
+              <ul>
+                {SNS.map((s) => (
+                  <li>
+                    <a href={s.href} target="_blank" rel="noopener" title={s.name}>
+                      <img src={s.icon} alt={s.name} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="container">
+        {bare ? (
+          <slot />
+        ) : (
+          <div id="contArea" class={contClass}>
+            {heading && (
+              <div class="sub-title">
+                <h2>{heading}</h2>
+                {breadcrumb && <div class="path" set:html={breadcrumb} />}
+              </div>
+            )}
+            <div class="real-cont" style={contStyle}>
+              <slot />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div id="footer">
+        <div class="footer">
+          <div class="contain">
+            <div class="foot-info">
+              <h3>{foot.contactTitle}</h3>
+              <address>
+                {foot.address.map((a) => <p>{a}</p>)}
+              </address>
+            </div>
+            <div class="foot-links">
+              <div class="col">
+                <h3>{foot.sitemapTitle}</h3>
+                <ul>
+                  {foot.sitemap.map((s) => <li><a href={p + s.href}>{s.label}</a></li>)}
+                </ul>
+              </div>
+              <div class="col">
+                <h3>{foot.langTitle}</h3>
+                <ul>
+                  {LANGS.map((l) => (
+                    <li><a href={prefix(l) + (path || '/')}>{LANG_LABEL[l]}</a></li>
+                  ))}
+                </ul>
+              </div>
+              <div class="col">
+                <h3>{foot.privacyTitle}</h3>
+                <ul class="doc">
+                  {foot.privacy.map((d) => <li><a href={p + d.href} class={d.cls}>{d.label}</a></li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <div class="contain">
+            <p>{foot.copyright}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline src="/js/jquery-1.11.1.min.js"></script>
+    <script is:inline src="/js/jquery.ui.js"></script>
+    <script is:inline src="/js/jquery.easing.1.3.js"></script>
+    <script is:inline src="/js/jquery.gnb.js"></script>
+    <script is:inline src="/js/slick.min.js"></script>
+    <script is:inline src="/js/swiper.min.js"></script>
+    <script is:inline src="/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script is:inline src="/fancybox/source/jquery.fancybox.pack.js"></script>
+    <script is:inline src="/js/script.js"></script>
+    <script is:inline>
+      if (window.jQuery && jQuery('#gnb').gnb) {
+        jQuery(function () { jQuery('#gnb').gnb({ d1: 1, d2: 1 }); });
+      }
+    </script>
+  </body>
+</html>

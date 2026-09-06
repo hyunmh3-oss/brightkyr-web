@@ -1,0 +1,357 @@
+@charset "utf-8";
+
+/* 마이페이지 */
+.mypage-content-wrap {display:flex; padding-top:95px; position:relative;}
+.mypage-content-wrap > .mypage-content {flex: 1 1 auto; min-width: 0; width: 1%;}
+.mypage-content-wrap .left-menu {position: sticky; top: 120px; width:288px; height: fit-content; margin-right:100px;}
+
+.page-menu03 h2 {font-size:45px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424; margin-bottom:40px;}
+.page-menu03 .member-info {padding-bottom:50px;}
+.page-menu03 .member-info dl {display:flex; justify-content:space-between; margin-bottom:24px; font-size:18px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#454545;}
+.page-menu03 .member-info dl:last-child {margin-bottom:0;}
+.page-menu03 .member-info dt {position:relative; padding-left:35px;}
+.page-menu03 .member-info dt:before {content:""; position:absolute; width:25px; height:25px; background-repeat:no-repeat; background-size:contain; background-position:50% 50%; left:0; top:-2px;}
+.page-menu03 .member-info .grade dt:before {background-image:url("/images/member/member_icon1.png");}
+.page-menu03 .member-info .coupon dt:before {background-image:url("/images/member/member_icon2.png");}
+.page-menu03 .member-info dd {font-weight:600; color:#242424;}
+
+.page-menu03 .mypage-menu {margin-bottom:30px;}
+.page-menu03 .mypage-menu li a {display:block; padding:25px 14px; position:relative; font-size:18px; font-weight:600; line-height:1.2em; letter-spacing:-0.03em; color:#aaa;}
+.page-menu03 .mypage-menu li.active a {color:#26436e;}
+.page-menu03 .mypage-menu li:first-child {border-top:1px solid #ddd;}
+.page-menu03 .mypage-menu li {border-bottom:1px solid #ddd;}
+
+.page-menu03 .cs-info {display: flex; align-items: center; justify-content: space-between; padding: 0 14px;}
+.page-menu03 .cs-info h3 {font-size:18px; font-weight:600; line-height:1.2em; letter-spacing:-0.03em; color:#454545;}
+
+/* 메인 */
+.mypage-group-tit {display:flex; justify-content:space-between; align-items:center; padding-bottom:20px; border-bottom:1px solid #686868;}
+.mypage-group-tit h3 {font-size:24px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424;}
+.mypage-group-tit h3 span {font-size:17px; font-weight:400; color:#686868; padding-left:18px;}
+.mypage-group-tit a {display:inline-block; padding-right:30px; position:relative; font-size:17px; font-weight:600; line-height:1.2em; letter-spacing:-0.03em; color:#454545;}
+.mypage-group-tit a:before {content:""; position:absolute; width:14px; height:11px; background:url("/images/member/arrow.png") no-repeat 50% 50%; right:0; top:50%; margin-top:-5.5px;}
+.mypage-home .home-tit {font-size:30px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#242424; margin-bottom:40px; padding-top:5px;}
+.mypage-home .home-tit span {font-weight:600;}
+.mypage-home .mywallet {padding:50px; border-radius:10px; background:#242424; margin-bottom:100px;}
+.mypage-home .mywallet .wrap {display:flex; margin:0 -45px;}
+.mypage-home .mywallet dl {font-size:20px; font-weight:600; min-height:120px; line-height:1.2em; letter-spacing:-0.03em; width:33.333%; border-right:1px solid #505050; padding:20px 45px 10px 45px; display:flex; flex-direction:column; justify-content:space-between;}
+.mypage-home .mywallet dl:last-child {border-right:0;}
+.mypage-home .mywallet dt {color:#aaa; margin-bottom:10px;}
+.mypage-home .mywallet dd {color:#fff;}
+.mypage-home .mywallet dd strong {font-size:40px;}
+
+.wish-all-select {display:flex; align-items:center; font-size:18px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; }
+.wish-all-select button {display:block; padding-left:20px; margin-left:20px; font-size:18px; font-weight:700; line-height:1.2em; color:#454545; border:0; background:0; position:relative;}
+.wish-all-select button:before {content:""; position:absolute; width:1px; height:16px; background:#ddd; left:0; top:50%; margin-top:-8px;}
+.wish-all-select .checkbox {margin-top:0;}
+.wish-all-select .checkbox label:before {background:url("/images/member/checkbox2.png") no-repeat 50% 50%; border:0;}
+.wish-all-select .checkbox input:focus + label:before {border:0;}
+
+.my-wish-list {padding-top:30px; margin-bottom:100px;}
+.my-wish-list ul {display:flex; flex-wrap:wrap; margin:0 -14px -70px -14px;}
+.my-wish-list ul li {width:33.333%; padding:0 14px; position:relative; margin-bottom:70px;}
+.my-wish-list ul li.none {width:100%; padding:100px 0; text-align:center;}
+.my-wish-list ul li.none .img {margin-bottom:17px;}
+.my-wish-list ul li.none .tt {font-size:20px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#686868;}
+.my-wish-list li > a {position:relative; display:block;}
+.my-wish-list .cnt {padding-right:130px;}
+.my-wish-list .cnt .tit {font-size:21px; font-weight:700; line-height:1.4em; letter-spacing:-0.03em; color:#242424; margin-bottom:5px;}
+.my-wish-list .cnt .cate {font-size:16px; font-weight:400; line-height:1.4em; letter-spacing:-0.03em; color:#454545; margin-bottom:18px;}
+.my-wish-list .cnt .price {font-size:22px; font-weight:700; line-height:1.4em; letter-spacing:-0.03em; color:#608bb5;}
+.my-wish-list .thumb {position:relative; padding-bottom:100%; overflow:hidden; margin:0 auto; background:#fff; border-radius:15px; border:1px solid #ddd; margin-bottom:22px;}
+.my-wish-list .thumb img {position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); -ms-transform:translate(-50%,-50%); -webkit-transform:translate(-50%,-50%); width:auto !important; height:auto !important; max-width:100%; max-height:100%; object-fit:contain;}
+.my-wish-list li .shop-btn-wrap {position:absolute; right:14px; bottom:0;}
+.wish-list-info {padding:30px 40px; border-radius:5px; background:#f5f5f5; margin-top:100px;}
+.wish-list-info .list02 {margin-top:0;}
+
+.order-check .checkbox input:checked + label:before {width:12px; height:8px; background:url("/images/member/checkbox2.png") no-repeat 50% 50%; border:0;}
+.order-check {position:absolute; top:20px; left:37px; z-index:2;}
+.order-check  .checkbox label:before {width:20px; height:20px; border:2px solid #242424; border-radius:3px; background-color:#fff;}
+
+
+.mypage-faq-list {border-bottom:1px solid #686868;}
+.mypage-faq-list ul li {border-bottom:1px solid #ddd;}
+.mypage-faq-list ul li.none {width:100%; padding:100px 0; text-align:center;}
+.mypage-faq-list ul li.none .img {margin-bottom:17px;}
+.mypage-faq-list ul li.none .tt {font-size:20px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#686868;}
+.mypage-faq-list ul li:last-child {border-bottom:0;}
+.mypage-faq-list a {position:relative; display:flex; align-items:center; justify-content:space-between; padding:55px 30px;}
+.mypage-faq-list .range {display:inline-block; padding:12px 30px; border-radius:100px; font-size:17px; font-weight:400; line-height:1em; letter-spacing:-0.03em; color:#454545; border:1px solid #ddd;}
+.mypage-faq-list .range.over {background:#686868; color:#fff; border-color:#686868;}
+.mypage-faq-list .tit {color:#242424; font-size:23px; font-weight:700; line-height:1.5em; letter-spacing:-.03em;}
+.mypage-faq-list .cnt {display:none; background:#f2f2f2; position:relative; padding:20px 30px; color:#454545; font-size:16px; font-weight:400;}
+.mypage-faq-list .cnt .cate {padding-bottom:35px; border-bottom:1px solid #ddd; font-size:17px; font-weight:600; line-height:1.2em; letter-spacing:-0.03em; color:#608bb5;}
+.mypage-faq-list .cnt .group {display:flex; padding:30px 0 35px; border-bottom:1px solid #ddd;}
+.mypage-faq-list .cnt .group:last-child {border-bottom:0;}
+.mypage-faq-list .cnt .txt-wrap {padding-top:5px; padding-left:15px;}
+.mypage-faq-list .cnt .txt-wrap .tt {font-weight:600; color:#242424; margin-bottom:10px;}
+.mypage-faq-list .cnt .txt-wrap .date {font-weight:500;}
+.mypage-faq-list .cnt .Q,
+.mypage-faq-list .cnt .A {width:36px; height:36px; border-radius:100%; line-height:36px; text-align:center; font-size:20px; font-weight:600; letter-spacing:-0.03em; color:#fff; flex:0 0 auto;}
+.mypage-faq-list .cnt .Q {background-color:#608bb5}
+.mypage-faq-list .cnt .A {background-color:#103d67}
+.mypage-faq-list .none {padding:70px 0; text-align:center; color:#999;}
+
+.mypage-btn {margin-top:50px; text-align:center;}
+.mypage-btn.ver2 {margin-top:80px;}
+.mypage-btn .btn-pack.xlarge {min-width:250px;}
+
+/* 쇼핑내역 */
+.mypage-title {font-size:40px; font-weight:800; line-height:1.2em; letter-spacing:-0.03em; color:#242424; margin-bottom:40px; font-family: 'NanumSquare', sans-serif;}
+.older-check-cate {margin-bottom:30px;}
+.older-check-cate ul {display:flex; margin:0 -5px;}
+.older-check-cate ul li {padding:0 5px;}
+.older-check-cate ul li a {display:block; min-width:220px; min-height:50px; display:flex; justify-content:center; align-items:center; text-align:center; padding:0 10px; font-size:18px; font-weight:400; letter-spacing:-0.03em; color:#454545; border-radius:100px; background:#f2f2f2;}
+.older-check-cate ul li.active a {background:#608bb5; color:#fff;}
+
+.older-period-search {display:flex; justify-content:space-between; align-items:center; background:#f2f2f2; padding:35px 40px; border-radius:10px; margin-bottom:40px;}
+.older-period-search .input {border-radius:5px; height:50px;}
+.older-period-search .radiobox-wrap {display:flex; margin:-5px; flex-wrap:wrap;}
+.older-period-search .radiobox-wrap .item {margin:5px;}
+.older-period-search .radiobox-wrap label {min-width:100px; height:50px; line-height:48px;}
+.older-period-search .radiobox-wrap label:before {display:none;}
+.older-period-search .radiobox-wrap input:checked + label  {background:#242424; color:#fff; border-color:#242424;}
+
+.datepicker-wrap {display:flex; align-items:center;}
+.datepicker-wrap .bar {display:inline-block; margin:0 5px;}
+.datepicker-wrap input {border:1px solid #242424;}
+.datepicker-wrap button {border:0; background:#242424; display:block; margin-left:10px; width:50px; height:50px; border-radius:5px;}
+.datepicker-wrap button img {vertical-align:middle;}
+
+.order-list {border-top:1px solid #686868;}
+.order-list ul li {display:flex; align-items:center; padding:30px 0; border-bottom:1px solid #ddd;}
+.order-list ul li .order-img {width:150px; margin-right:25px;}
+.order-list ul li .order-img a {display:block; position:relative; padding-bottom:100%; overflow:hidden; border-radius:5px;}
+.order-list ul li .order-img a img {position:absolute; top:50%; left:0; transition:.4s ease-in-out; transform:translateY(-50%); -ms-transform:translateY(-50%); -webkit-transform:translateY(-50%); width:100%; height:auto !important; max-width:100%; min-height:100%; object-fit:cover;}
+.order-list ul li .order-img a:after {content:""; position:absolute; top:0; left:0; right:0; bottom:0; border:1px solid #ddd; border-radius:5px;}
+
+.order-list ul li .order-info {flex: 1 1 auto; min-width: 0; width: 1%;}
+.order-list ul li .order-range {font-size:18px; font-weight:600; letter-spacing:-0.03em; line-height:1.2em; color:#242424; text-align:center;}
+.order-list ul li .order-range a {display:block; margin-top:8px; text-decoration:underline; color:#608bb5;}
+.order-list ul li .more {margin-left:80px;}
+.order-list ul li .more a {padding:14px 24px; display:inline-block; border:1px solid #686868; border-radius:5px; font-size:18px; font-weight:500; line-height:1em; letter-spacing:-0.03em; color:#454545;}
+.order-list ul li .more a:hover {border-color:#608bb5; color:#fff; background:#608bb5;}
+.order-list ul li dl {display:flex; align-items:center; line-height:1.2em; letter-spacing:-0.03em; color:#454545; font-weight:400; margin-bottom:12px;}
+.order-list ul li dl:last-child {margin-bottom:0;}
+.order-list ul li dt {min-width:80px;}
+.order-list ul li dd {font-weight:500; color:#242424;}
+.order-list ul li.none {display:block; padding:100px 0; text-align:center; border-bottom:none;}
+.order-list ul li.none .img {margin-bottom:17px;}
+.order-list ul li.none .tt {font-size:20px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#686868;}
+
+/* 보유쿠폰 */
+.my-coupon-list ul li {display:flex; margin-bottom:20px;}
+.my-coupon-list ul li.none {display:block; padding:100px 0; text-align:center; border-bottom:none;}
+.my-coupon-list ul li.none > div {border:0; margin-left:0;}
+.my-coupon-list ul li.none .img {margin-bottom:17px;}
+.my-coupon-list ul li.none .tt {font-size:20px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#686868;}
+
+.my-coupon-list ul li:last-child {margin-bottom:0;}
+.my-coupon-list ul li > div {border:1px solid #ddd; border-radius:7px; margin-left:-1px; position:relative;}
+.my-coupon-list ul li .cnt {flex: 1 1 auto; min-width: 0; width: 1%; padding:35px 55px;}
+.my-coupon-list ul li .cnt .tit {font-size:21px; font-weight:700; line-height:1.4em; letter-spacing:-0.03em; color:#242424; margin-bottom:8px;}
+.my-coupon-list ul li .cnt .txt {font-weight:400; line-height:1.7em; letter-spacing:-0.03em; color:#454545;}
+.my-coupon-list ul li .cnt .deadline {font-weight:400;line-height:1.7em; letter-spacing:-0.03em; color:#454545;}
+.my-coupon-list ul li .cnt .deadline .bar {display:inline-block; width:1px; height:14px; background:#ddd; vertical-align:middle; margin:0 14px;}
+.my-coupon-list ul li .discount {min-width:200px; display:flex; justify-content:center; align-items:center; font-size:22px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em;}
+.my-coupon-info {margin-top:60px;}
+.my-point-info {margin-top:60px;}
+
+/* 포인트 */
+.my-point {padding:50px; border-radius:10px; background:#242424; margin-bottom:35px;}
+.my-point dl {display:flex; align-items:flex-end; justify-content:space-between; letter-spacing:-0.03em; line-height:1.2em;}
+.my-point dt {font-size:20px; font-weight:600; color:#aaa;}
+.my-point dd {font-size:40px; font-weight:700; color:#fff;}
+
+.table03 table {border-top:0; text-align:center;}
+.table03.ver2 table {border-top:1px solid #686868;}
+.table03.ver3 table {border-top:1px solid #686868;}
+.table03 th {font-size:18px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424; padding:30px 10px; border-bottom:1px solid #ddd;}
+.table03 td {border-bottom:1px solid #ddd; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#454545; padding:30px 10px;}
+.table03.ver2 table td:nth-child(2) {font-weight:600;}
+.table03.ver2 table td:nth-child(3) {text-align: left; padding-left: 20px; padding-right: 20px;}
+.service-sub-txt {font-size:17px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#454545; margin-bottom:15px;}
+
+.m-mypoint {display:none;}
+.m-mypoint ul li {padding:10px 0; border-bottom:1px solid #ddd; border-top:1px solid #686868;}
+.m-mypoint ul li span {display:inline-block; margin-right:15px;}
+
+/* 서비스 내역 */
+.m-service-list {display:none; border-top:1px solid #686868;}
+.m-service-list ul li {padding:20px 0; border-bottom:1px solid #ddd;}
+.m-service-list ul li span {display:inline-block; margin-right:15px;}
+
+/* 내정보 */
+.mypage-myinfo .join-form {max-width:100%;}
+.mypage-myinfo .join-form .input {border:1px solid #ddd; height:50px;}
+.mypage-myinfo .join-form a {height:50px; line-height:48px;}
+.mypage-myinfo .join-form td {line-height:50px;}
+.mypage-content .btn-pack.xlarge {min-width:250px;}
+.leave-table .table-cap {position:relative; padding-left:30px; font-size:17px; font-weight:600; line-height:1.2em; letter-spacing:-0.03em; color:#608bb5; margin-bottom:13px;}
+.leave-table .table-cap:before {content:""; position:absolute; width:22px; height:22px; left:0; background:url("/images/member/bullet02.png") no-repeat 50% 50%; top:-2px; background-size:contain;}
+
+.leave-table table {width:100%; border-collapse:collapse; border-spacing:0px; border-top:1px solid #ddd;}
+.leave-table th {font-size:18px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424; padding:25px 0; padding-left:40px; text-align:left;}
+.leave-table td {font-size:16px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#242424; padding:15px 20px;}
+.leave-table th,
+.leave-table td {border-bottom:1px solid #ddd;}
+.leave-table td input {border-radius:5px;}
+
+.btn-delete {display: block; width: 100%; border: 1px solid #e84426; background: #fff; color: #e84426; font-size: 12px; transition: .2s;}
+.btn-delete:hover {background:#e84426; color: #fff;}
+
+/* 회원탈퇴 */
+.mypage-leave .sub-txt {font-size:17px; font-weight:400; line-height:1.7em; letter-spacing:-0.03em; color:#454545; margin-bottom:48px;}
+.leave-info {display:flex; align-items:center; padding:40px 45px; border-radius:5px; background:#f5f5f5; margin-bottom:80px;}
+.leave-info .icon {margin-right:30px;}
+.leave-info ul {flex: 1 1 auto; min-width: 0; width: 1%;}
+.leave-info ul > li {margin-bottom:5px;}
+.myinfo-info {display:flex; justify-content:space-between; margin-top:150px; background:#f5f5f5; padding:45px; border-radius:5px; align-items:center;}
+.myinfo-info .list02 {margin-top:0;}
+
+/* 로그인 */
+.login-logo {margin-bottom:90px;}
+.login-area {max-width:500px; margin:0 auto;}
+.login-tab {text-align:center; margin-bottom:40px;}
+.login-tab ul {display:flex; padding:0 -30px; justify-content:center;}
+.login-tab ul li {padding:0 30px; position:relative; }
+.login-tab ul li a {display:block; color:#c3c3c3; font-size:30px; font-weight:700; line-height:1.4em; letter-spacing:-0.03em;}
+.login-tab ul li:after {content:""; position:absolute; right:0; top:50%; margin-top:-10px; width:1px; height:20px; background:#cecece;}
+.login-tab ul li:last-child:after {display:none;}
+.login-tab ul li.active a {color:#608bb5;}
+
+.round-wrap {border:1px solid #686868; border-radius:10px; overflow:hidden;}
+.login-content .group {border-bottom:1px solid #ddd;}
+.login-content .group:last-child {border-bottom:0;}
+.login-content .group .input {display:block; width:100%; height:80px; padding-left:30px; font-size:16px; border-radius:10px; border:0;}
+.login-content .links {display:flex; justify-content:space-between; margin-top:14px; font-size:17px; color:#242424; font-weight:700; line-height:1.5em;}
+.login-content .links a:hover {text-decoration:underline;}
+.login-content .links .bar {display:inline-block; vertical-align:middle; margin:-.2em 12px 0; width:1px; height:16px; background:#ddd;}
+.login-content .btn-pack {display:block; width:100%; margin-top:10px;}
+.login-content .btn-pack.focus {margin-top:50px;}
+.login-content .btn-pack.xlarge {font-weight:500;}
+.login-content .checkbox label:before {background-color:#fff; border:2px solid #242424; border-radius:3px;}
+.login-content .sub-txt {font-size:17px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#454545; margin-top:30px;}
+
+.sns-login {text-align:center; margin-top:50px;}
+.sns-login .tit {position:relative; color:#686868; font-size:15px; font-weight:400; line-height:1.3em; margin-bottom:35px;}
+.sns-login .tit:before {content:""; position:absolute; top:50%; left:0; margin-top:-1px; width:100%; height:1px; background:#ddd;}
+.sns-login .tit span {display:inline-block; position:relative; padding:0 30px; background:#fff;}
+.sns-login a {margin:0 10px;}
+.sns-login .wrap {font-size:17px; font-weight:400; line-height:1.4em; letter-spacing:-0.03em; color:#454545; text-align:left; display:flex; align-items:center; justify-content:space-between;}
+
+/* 약관동의 */
+.agree-wrap {max-width:680px; margin:0 auto 50px;}
+.agree-wrap:last-child {margin-bottom:0;}
+.agree-wrap .group {padding:28px 40px; border-bottom:1px solid #ddd;}
+.agree-wrap .group:last-child {border-bottom:0;}
+.agree-wrap .group h3 {font-size:20px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424; margin-bottom:15px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;}
+.agree-wrap .group .pop-btn {display:inline-block; text-decoration:underline; font-size:16px; font-weight:400; line-height:1.2em; letter-spacing:-0.03em; color:#454545;}
+.agree-wrap .agree-tit {color:#454545; font-size:17px; font-weight:400; line-height:1.4em; letter-spacing:-.03em; display:flex; justify-content:space-between; margin-bottom:15px;}
+.agree-wrap .agree-tit:last-child {margin-bottom:0;}
+.agree-wrap .agree-tit .checkbox label:before {width:18px; height:18px; background:#fff; border:2px solid #000;}
+.agree-wrap .agree-tit .checkbox input:checked + label:before {background-color:#608bb5; border-color:#608bb5; background:#608bb5 url("/images/bbs/checkbox.png") 50% 50% no-repeat;}
+.agree-wrap .agree-box {position:relative; max-height:175px; margin-top:17px; padding:16px 20px; border:1px solid #ddd; overflow:auto;}
+.agree-wrap .agree-box .terms-wrap {color:#767676; font-size:14px;}
+.agree-wrap .agree-box .terms-wrap .sec {margin-bottom:20px;}
+.agree-wrap .agree-box .terms-wrap .sec h3 {color:#767676; font-size:14px; font-weight:300; margin-bottom:0;}
+.agree-wrap .agree-box .terms-wrap .sec strong {font-weight:300;}
+.agree-wrap .agree-list {margin-top:25px;}
+.agree-wrap .agree-list ul li {padding-left:10px; position:relative; font-size:16px; font-weight:400; line-height:1.4em; letter-spacing:-0.03em; color:#454545; margin-bottom:10px;}
+.agree-wrap .agree-list ul li:before {content:""; position:absolute; width:3px; height:3px; border-radius:100%; background:#454545; left:0; top:10px;}
+.agree-wrap .agree-list ul li:last-child {margin-bottom:0;}
+.agree-wrap .btn-pack {width:100%;}
+.agree-wrap .list02 {margin-top: 10px;}
+.agree-wrap .list02 > li {font-size:16px;}
+
+.terms-wrap {font-weight:300; color:#666; line-height:1.75em; letter-spacing:-.03em;}
+.terms-wrap .sec {margin-bottom:40px;}
+.terms-wrap .sec h3 {color:#222; font-size:1.1em; font-weight:500; margin-bottom:7px;}
+.terms-wrap .sec p {margin-bottom:1em;}
+.terms-wrap .sec strong {font-weight:500;}
+.terms-wrap .sec ol li {padding-left:1em; text-indent:-1em;}
+.terms-wrap .sec ol li ol li {padding-left:1.35em; text-indent:-1.35em;}
+.terms-wrap .policy-contact {display:flex; padding:20px 0; background:#fafafa; border:1px solid #e5e5e5; margin-bottom:1em;}
+.terms-wrap .policy-contact dl {flex:1; padding:0 20px; border-left:1px solid #e5e5e5;}
+.terms-wrap .policy-contact dl:first-child {border-left:0;}
+.terms-wrap .policy-contact dt {font-weight:500; color:#333; margin-bottom:12px;}
+.terms-wrap .table {margin:10px 0;}
+.terms-wrap .table table {width:100%; border-collapse:collapse; border-spacing:0px;}
+.terms-wrap .table th {padding:10px; border:1px solid #dfdfdf; background:#fafafa; font-weight:500; color:#333;}
+.terms-wrap .table td {padding:10px; border:1px solid #dfdfdf; text-align:center; font-weight:300; color:#666;}
+.terms-wrap .table td b {font-weight:500;}
+
+/* 회원가입 */
+.join-tit {}
+.join-tit h3 {display:inline-block; color:#608bb5; font-size:18px; font-weight:500; line-height:1.3em;}
+.join-tit p {display:inline-block;}
+.join-tit.flex {display:flex; justify-content:space-between;}
+.join-form {max-width:800px; margin:0 auto; position:relative;}
+.join-form .required {color:#608bb5}
+.join-form .join-form-txt {color:#505050; font-weight:300; line-height:1.4em; margin-bottom:12px;}
+
+.join-form table {width:100%; border-collapse:collapse; border-spacing:0px; font-size:15px; line-height:1.5em; letter-spacing:-.03em;}
+.join-form table th {padding:12px 0; padding-left:40px; height:80px; font-weight:600; font-size:18px; color:#242424; border-bottom:1px solid #ddd; text-align:left; border-right:1px solid #ddd;}
+.join-form table th small {font-weight:400; color:#686868; line-height:1.3em;}
+.join-form table td {padding:12px 20px; font-size:17px; color:#454545; font-weight:400; border-bottom:1px solid #ddd;}
+.join-form tr th:first-child,
+.join-form tr td:first-child {border-left:0;}
+.join-form tr th:last-child,
+.join-form tr td:last-child {border-right:0;}
+.join-form input[readonly] { color:#505050;}
+.join-form .input {border:0; border-radius:5px; height:50px;}
+.join-form .input::placeholder {color:#878787}
+.join-form .item {margin-top:10px; display:inline-block;}
+.join-form .radiobox {margin-right:30px; font-weight:500;}
+.join-form .help-text {display:inline-block; margin-left:10px; color:#767676;}
+.join-form + .buttons {margin-top:50px;}
+
+.join-tit-wrap {display:flex; justify-content:space-between; width:100%; max-width:800px; margin:45px auto 20px auto;}
+.join-tit-wrap h3 {font-size:24px; font-weight:700; line-height:1.2em; letter-spacing:-0.03em; color:#242424; padding-left:40px; position:relative;}
+.join-tit-wrap h3:before {content:""; position:absolute; width:30px; height:30px; left:0; top:0; background:url("/images/sub/bullet04.png") no-repeat 50% 50%; background-size:contain;}
+.join-tit-wrap .table-cap {margin-top:0; font-size:17px; font-weight:400; color:#454545;}
+
+
+/* 가입완료 */
+.join-complete {text-align:center;}
+.join-complete .tit {color:#242424; font-size:30px; font-weight:700; line-height:1.4em; letter-spacing:-.03em; margin-bottom:50px;}
+.join-complete .txt {color:#454545; font-size:20px; line-height:1.5em; letter-spacing:-.03em;}
+.join-complete .icon {width:155px; height:114px; background:url("/images/member/complete.png") 50% 50% no-repeat; margin:70px auto 65px;}
+.join-complete .buttons {margin:0;}
+
+/* 게정찾기 */
+.find-area {max-width:470px; margin:20px auto 0;}
+.find-tab {text-align:center; margin-bottom:50px;}
+
+.find-tab ul {display:flex; margin:0 -30px; justify-content:center;}
+.find-tab ul li {padding:0 30px; position:relative; }
+.find-tab ul li a {display:block; color:#c3c3c3; font-size:30px; font-weight:700; line-height:1.4em; letter-spacing:-0.03em;}
+.find-tab ul li:after {content:""; position:absolute; right:0; top:50%; margin-top:-10px; width:1px; height:20px; background:#cecece;}
+.find-tab ul li:last-child:after {display:none;}
+.find-tab ul li.active a {color:#608bb5;}
+
+
+.find-content .group {border-bottom:1px solid #ddd;}
+.find-content .group:last-child {border-bottom:0;}
+.find-content .group .input {display:block; width:100%; height:80px; font-size:16px; border:0; border-radius:10px;}
+.find-content .btn-pack {display:block; width:100%; margin-top:10px;}
+.find-content .btn-pack.focus {margin-top:50px;}
+.find-content .btn-pack.xlarge {font-weight:500;}
+.find-result { color:#454545; font-size:17px; font-weight:300; line-height:1.4em; letter-spacing:-.03em;}
+.find-result .round-wrap {margin-bottom: 10px; text-align:center; padding:50px 10px;}
+.find-result h4 {margin-bottom: 10px;}
+.find-result p:first-child {margin-bottom:10px;}
+.find-result p strong {color:#242424; font-weight:500;}
+.find-result .name {color:#608bb5; font-weight:700;}
+.find-result .list02 > li {letter-spacing:-0.05em; font-size:16px;}
+
+/* 회원탈퇴 */
+
+.member-leave .txt {text-align:center; color:#505050; line-height:1.7em; letter-spacing:-.03em; margin-bottom:40px;}
+.member-leave .txt .tit {color:#333; font-size:20px; line-height:1.5em; margin-bottom:15px;}
+.member-leave .form {max-width:470px; margin:0 auto 40px; padding:50px; color:#666; font-size:16px; line-height:1.5em; background:#f9f9f9; border:1px solid #e5e5e5; border-radius:10px;}
+.member-leave .form .group {display:flex; align-items:center; margin-bottom:20px;}
+.member-leave .form .group:last-child {margin-bottom:0;}
+.member-leave .form .group .label-tt {width:90px; color:#222; font-weight:500;}
+.member-leave .form .group .text-id,
+.member-leave .form .group .input {flex:1 1 auto; min-width:0; width:1%;}

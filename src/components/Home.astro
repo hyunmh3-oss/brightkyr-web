@@ -1,0 +1,187 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { prefix, type Lang } from '../i18n/nav';
+import { HOME, BANNERS, PARTNERS } from '../i18n/home';
+
+export interface Props {
+  lang: Lang;
+  news: CollectionEntry<'news'>[];
+  social: CollectionEntry<'social'>[];
+}
+const { lang, news, social } = Astro.props;
+const p = prefix(lang);
+const h = HOME[lang];
+
+/**
+ * 원본 메인은 관리자가 따로 고른 게시물을 보여줬지만
+ * 그 선택 정보는 공개 페이지에 남아 있지 않다.
+ * 대신 최신 글을 쓴다 — 새 글을 올리면 메인에도 자동으로 올라온다.
+ */
+const SOCIAL_COUNT = 10;
+const NEWS_COUNT = 5;
+
+/** 본문 HTML 에서 첫 번째 이미지를 찾아 목록 썸네일로 쓴다 */
+function firstImage(body: string): string {
+  const m = body.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m ? m[1] : '';
+}
+
+/** 본문 HTML 에서 태그를 걷어내고 요약문을 만든다 */
+function excerpt(body: string, len = 300): string {
+  const t = body
+    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return t.length > len ? t.slice(0, len) + '…' : t;
+}
+
+function byNoDesc(a: any, b: any) {
+  const an = parseInt(a.data.no, 10);
+  const bn = parseInt(b.data.no, 10);
+  return (Number.isNaN(bn) ? -1 : bn) - (Number.isNaN(an) ? -1 : an);
+}
+
+type Card = { href: string; img: string; cate: string; title: string; txt: string };
+
+function toCards(entries: any[], board: 'news' | 'social', limit: number): Card[] {
+  return entries
+    .filter((e) => e.data.lang === lang)
+    .sort(byNoDesc)
+    .map((e) => ({
+      href: `${p}/${board}/${e.data.idx}`,
+      img: firstImage(e.body ?? ''),
+      cate: e.data.category || '',
+      title: e.data.title,
+      txt: excerpt(e.body ?? ''),
+    }))
+    .filter((c) => c.img)
+    .slice(0, limit);
+}
+
+const socialCards = toCards(social, 'social', SOCIAL_COUNT);
+const newsCards = toCards(news, 'news', NEWS_COUNT);
+---
+
+<div class="main-visual">
+  <div class="inner">
+    <div class="items">
+      {BANNERS.map((b) => (
+        <div class="item"><img src={b} alt="" /></div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<div class="main-project">
+  <div class="contain">
+    <div class="m-head">
+      <p>{h.project.p}</p>
+      <h2>{h.project.h2}</h2>
+    </div>
+    <ul>
+      {h.project.items.map((it) => (
+        <li>
+          <a href={p + it.href}>
+            <div class="img"><img src={it.img} alt="" /></div>
+            <div class="tit" set:html={it.tit} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<div class="main-notice">
+  <div class="contain">
+    <div class="m-head">
+      <p>{h.notice.p}</p>
+      <h2>{h.notice.h2}</h2>
+    </div>
+    <div class="cnt-wrap">
+      {[socialCards, newsCards].map((cards, ci) => (
+        <div class="cnt">
+          <div class="col">
+            <div class="items">
+              {cards.map((c) => (
+                <div class="item">
+                  <div class="thumb">
+                    <a href={c.href} title={c.title}><img src={c.img} alt={c.title} /></a>
+                  </div>
+                  <div class="box">
+                    <div class="tit">
+                      <a href={c.href} title={c.title}>
+                        {c.cate && <span class="cate">{c.cate}</span>}
+                        <h4>{c.title}</h4>
+                      </a>
+                    </div>
+                    <div class="txt">{c.txt}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="main-notice-ctrl">
+              <div class="roll-btn">
+                <div class="custom_paging"></div>
+              </div>
+            </div>
+          </div>
+          <h3>{h.notice.h3[ci]}</h3>
+        </div>
+      ))}
+
+      <div class="cnt">
+        <div class="col">
+          <div class="items">
+            <div class="item">
+              <div class="thumb">
+                <a href={p + h.apply.href} title={h.apply.cate}><img src={h.apply.img} alt={h.apply.cate} /></a>
+              </div>
+              <div class="box">
+                <div class="tit">
+                  <a href={p + h.apply.href} title={h.apply.cate}>
+                    <span class="cate">{h.apply.cate}</span>
+                    <h4>{h.apply.h4}</h4>
+                  </a>
+                </div>
+                <div class="txt" set:html={h.apply.txt} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3>{h.notice.h3[2]}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main-partner">
+  <div class="contain">
+    <div class="m-head">
+      <p>{h.partner.p}</p>
+      <h2>{h.partner.h2}</h2>
+    </div>
+    <div class="slider">
+      <div class="swiper-container">
+        <ul class="items swiper-wrapper">
+          {PARTNERS.map((pt) => (
+            <li class="item swiper-slide">
+              {pt.href ? (
+                <a href={pt.href} target="_blank" rel="noopener"><img src={pt.img} alt="" /></a>
+              ) : (
+                <a href="javascript:;"><img src={pt.img} alt="" /></a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button class="slide-btn prev">{h.prevBtn}</button>
+      <button class="slide-btn next">{h.nextBtn}</button>
+    </div>
+  </div>
+</div>

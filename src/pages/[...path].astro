@@ -1,0 +1,230 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BoardList from '../components/BoardList.astro';
+import BoardDetail from '../components/BoardDetail.astro';
+import Home from '../components/Home.astro';
+import { LANGS, prefix, BOARD_TITLE, NAV, type Lang } from '../i18n/nav';
+
+/**
+ * 사이트 전체를 한 라우트에서 생성한다.
+ * 한국어는 접두사 없이(/about), 나머지는 /en/about 형태.
+ * 종류: home | page | board | post
+ */
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  const news = await getCollection('news');
+  const social = await getCollection('social');
+
+  const out: any[] = [];
+
+  for (const lang of LANGS) {
+    const pre = lang === 'ko' ? '' : lang;
+
+    // 메인
+    out.push({
+      params: { path: pre || undefined },
+      props: { kind: 'home', lang },
+    });
+
+    // 고정 페이지
+    for (const pg of pages.filter((x) => x.data.lang === lang)) {
+      const slug = pg.data.pageKey.replace(/^projects-/, 'projects/');
+      out.push({
+        params: { path: [pre, slug].filter(Boolean).join('/') },
+        props: { kind: 'page', lang, entryId: pg.id },
+      });
+    }
+
+    // 게시판 목록
+    for (const b of ['news', 'social'] as const) {
+      out.push({
+        params: { path: [pre, b].filter(Boolean).join('/') },
+        props: { kind: 'board', lang, board: b },
+      });
+    }
+
+    // 게시물 상세
+    for (const e of news.filter((x) => x.data.lang === lang)) {
+      out.push({
+        params: { path: [pre, 'news', e.data.idx].filter(Boolean).join('/') },
+        props: { kind: 'post', lang, board: 'news', entryId: e.id },
+      });
+    }
+    for (const e of social.filter((x) => x.data.lang === lang)) {
+      out.push({
+        params: { path: [pre, 'social', e.data.idx].filter(Boolean).join('/') },
+        props: { kind: 'post', lang, board: 'social', entryId: e.id },
+      });
+    }
+
+    // 자료실 (1단계에서는 안내 페이지)
+    out.push({
+      params: { path: [pre, 'library'].filter(Boolean).join('/') },
+      props: { kind: 'library', lang },
+    });
+  }
+  return out;
+}
+
+const { kind, lang } = Astro.props as { kind: string; lang: Lang };
+const p = prefix(lang);
+
+const allPages = await getCollection('pages');
+const allNews = await getCollection('news');
+const allSocial = await getCollection('social');
+
+// ── 공통 값 ────────────────────────────────
+let heading = '';
+let breadcrumb = '';
+let title = '';
+let bodyHtml = '';
+let boardPosts: any[] = [];
+let entry: any = null;
+let prevEntry: any = null;
+let nextEntry: any = null;
+
+// 원본 확인 결과 한국어·영어·키르기즈어는 모두 'Home' 을 그대로 쓰고
+// 러시아어만 번역돼 있다. 원본 표기를 그대로 따른다.
+const homeLabel = { ko: 'Home', en: 'Home', ky: 'Home', ru: 'Главная страница' }[lang];
+
+function esc(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** 첫 항목은 home 스타일, 사이는 화살표로 연결 */
+function crumb(...parts: string[]) {
+  return [
+    `<span class="home">${esc(homeLabel)}</span>`,
+    ...parts.filter(Boolean).map(esc),
+  ].join(' <span class="arrow">&gt;</span> ');
+}
+
+/** 원본 breadcrumb 문자열("Home > A > B")을 마크업으로 변환 */
+function crumbFrom(raw: string) {
+  const parts = raw
+    .split('>')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (parts.length === 0) return '';
+  // 첫 조각이 Home 계열이면 버리고 현재 언어 라벨을 쓴다
+  const rest = /^home$/i.test(parts[0]) ? parts.slice(1) : parts;
+  return crumb(...rest);
+}
+
+if (kind === 'page') {
+  const { entryId } = Astro.props as any;
+  entry = allPages.find((x) => x.id === entryId)!;
+  title = entry.data.title;
+  heading = entry.data.title;
+  breadcrumb = entry.data.visual ? crumbFrom(entry.data.visual) : crumb(entry.data.title);
+  bodyHtml = entry.body ?? '';
+} else if (kind === 'board') {
+  const { board } = Astro.props as any;
+  const set = board === 'news' ? allNews : allSocial;
+  boardPosts = set.filter((x) => x.data.lang === lang);
+  title = BOARD_TITLE[lang][board as 'news' | 'social'];
+  heading = title;
+  const parent = NAV[lang].find((n) => n.children?.some((c) => c.href === `/${board}`));
+  breadcrumb = crumb(parent ? parent.label : title, title);
+} else if (kind === 'post') {
+  const { board, entryId } = Astro.props as any;
+  const set = board === 'news' ? allNews : allSocial;
+  const mine = set
+    .filter((x) => x.data.lang === lang)
+    .sort((a, b) => {
+      const an = parseInt(a.data.no, 10);
+      const bn = parseInt(b.data.no, 10);
+      return (Number.isNaN(bn) ? 1e9 : bn) - (Number.isNaN(an) ? 1e9 : an);
+    });
+  const i = mine.findIndex((x) => x.id === entryId);
+  entry = mine[i];
+  prevEntry = mine[i + 1];
+  nextEntry = mine[i - 1];
+  title = entry.data.title;
+  heading = BOARD_TITLE[lang][board as 'news' | 'social'];
+  const parent = NAV[lang].find((n) => n.children?.some((c) => c.href === `/${board}`));
+  breadcrumb = crumb(parent ? parent.label : heading, heading);
+  bodyHtml = entry.body ?? '';
+} else if (kind === 'library') {
+  const nav = NAV[lang].find((n) => n.href === '/library');
+  title = nav ? nav.label : 'Library';
+  heading = title;
+  breadcrumb = crumb(title);
+} else {
+  // home
+  title = '';
+}
+
+const currentPath =
+  kind === 'home'
+    ? '/'
+    : kind === 'page'
+      ? '/' + (entry?.data.pageKey ?? '').replace(/^projects-/, 'projects/')
+      : kind === 'board'
+        ? `/${(Astro.props as any).board}`
+        : kind === 'post'
+          ? `/${(Astro.props as any).board}`
+          : '/library';
+
+/**
+ * 원본은 고정 페이지에서 #contArea 에 class="wide"(본문 1265px)를 주고,
+ * 게시판 목록·글 보기에서는 class 를 비워 1200px 로 좁힌다.
+ */
+const contClass = kind === 'board' || kind === 'post' ? '' : 'wide';
+
+/**
+ * 원본은 소개·프로젝트 페이지의 .real-cont 에 padding-bottom:0 을 직접 준다.
+ * (참여방법·협력기관 페이지에는 없다.)
+ */
+const pageKeyNow: string = kind === 'page' ? (entry?.data.pageKey ?? '') : '';
+const contStyle =
+  pageKeyNow === 'about' || pageKeyNow.startsWith('projects-') ? 'padding-bottom: 0;' : undefined;
+
+const libraryNotice = {
+  ko: '자료실은 회원 전용이며 현재 준비 중입니다.',
+  en: 'The library is for members only and is being prepared.',
+  ky: 'Архив мүчөлөр үчүн гана жана азыр даярдалууда.',
+  ru: 'Архив доступен только участникам и сейчас готовится.',
+}[lang];
+---
+
+{kind === 'home' ? (
+  <Base lang={lang} path="/" bare={true}>
+    <Home lang={lang} news={allNews} social={allSocial} />
+  </Base>
+) : (
+  <Base lang={lang} title={title} heading={heading} breadcrumb={breadcrumb} path={currentPath} contClass={contClass} contStyle={contStyle}>
+    {/* 원본은 본문 블록을 .real-cont 바로 밑에 두므로 감싸는 div 를 만들지 않는다 */}
+    {kind === 'page' && <Fragment set:html={bodyHtml} />}
+
+    {/* 원본은 목록 마크업을 .real-cont 바로 밑에 둔다 (.contain 으로 감싸지 않음) */}
+    {kind === 'board' && <BoardList lang={lang} kind={(Astro.props as any).board} posts={boardPosts} />}
+
+    {kind === 'post' && (
+      <BoardDetail
+        lang={lang}
+        kind={(Astro.props as any).board}
+        entry={entry}
+        prevEntry={prevEntry}
+        nextEntry={nextEntry}
+        body={bodyHtml}
+      />
+    )}
+
+    {kind === 'library' && (
+      <div class="contain">
+        <p class="notice-box">{libraryNotice}</p>
+      </div>
+    )}
+  </Base>
+)}
+
+<style>
+  .notice-box {
+    padding: 60px 20px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+  }
+</style>

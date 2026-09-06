@@ -1,0 +1,16 @@
+﻿=== 페이지 수집 시작 2026-09-06 17:15:22 ===
+ko: 완료
+en: 완료
+ky: 완료
+ru: 완료
+페이지: ok=40 fail=0
+news: 7건
+news_en: 5건
+news_kg: 6건
+news_ru: 6건
+social: 19건
+social_en: 11건
+social_kg: 16건
+social_ru: 19건
+게시물 목록 합계: 89건
+=== 완료 17:15:54 ===

@@ -1,0 +1,17 @@
+dist/
+.astro/
+node_modules/
+
+# 수집 원본 — 용량이 커서 저장소에 올리지 않음.
+# 기록(CSV·로그)만 올리고 바이너리 원본은 제외.
+_수집자료/images/
+_수집자료/detail/
+_수집자료/html/
+_수집자료/design/
+_수집자료/attach/
+
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*

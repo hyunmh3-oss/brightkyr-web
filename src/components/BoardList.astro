@@ -1,0 +1,205 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { prefix, TABLE_HEAD, UI, BOARD_UI, BOARD_CATS, BOARD_TITLE, type Lang } from '../i18n/nav';
+
+export interface Props {
+  lang: Lang;
+  kind: 'news' | 'social';
+  posts: CollectionEntry<'news' | 'social'>[];
+}
+const { lang, kind, posts } = Astro.props;
+const p = prefix(lang);
+const head = TABLE_HEAD[lang];
+const ui = UI[lang];
+const bui = BOARD_UI[lang];
+
+/**
+ * 원본은 PHP 가 한 쪽에 10건씩 잘라 보내고 검색어를 서버에서 처리했다.
+ * 정적 사이트에는 서버가 없으므로 전체 목록을 한 번에 내려보내고
+ * 분류·검색어·쪽 넘김을 브라우저에서 처리한다. 화면과 조작은 원본과 같다.
+ */
+const PER_PAGE = 10;
+
+/**
+ * 원본 정렬: 공지(번호 칸에 숫자가 없는 글)가 맨 위에 오고 그 안에서는 글 번호 내림차순,
+ * 그 아래로 일반 글이 번호 내림차순.
+ */
+function isNoticeOf(e: (typeof posts)[number]) {
+  return Number.isNaN(parseInt(e.data.no, 10));
+}
+const sorted = [...posts].sort((a, b) => {
+  const an = isNoticeOf(a);
+  const bn = isNoticeOf(b);
+  if (an !== bn) return an ? -1 : 1;
+  if (an) return parseInt(b.data.idx, 10) - parseInt(a.data.idx, 10);
+  return parseInt(b.data.no, 10) - parseInt(a.data.no, 10);
+});
+
+// 원본 순서를 우선하고, 목록에 없는 분류가 있으면 뒤에 덧붙인다.
+const known = BOARD_CATS[lang][kind];
+const used = new Set(sorted.map((x) => x.data.category).filter(Boolean));
+const cats = [...known, ...[...used].filter((c) => !known.includes(c))];
+
+const caption = `${BOARD_TITLE[lang][kind]} (${bui.langLabel}) ${bui.captionSuffix}`;
+---
+
+<div class="board-search">
+  <form onsubmit="return false;">
+    <div class="total-page">{bui.all} : <span id="boardTotal">{sorted.length}</span></div>
+    <div class="cate">
+      <select id="boardCate" class="input" title={head[1]}>
+        <option value="">{bui.all}</option>
+        {cats.map((c) => <option value={c}>{c}</option>)}
+      </select>
+    </div>
+    <div class="search">
+      <input type="text" id="keyword" class="input" placeholder={bui.placeholder} />
+      <button type="submit" class="btn-pack medium focus" id="boardSearch">{bui.search}</button>
+    </div>
+  </form>
+</div>
+
+<div class="board-list">
+  <table>
+    <caption>{caption}</caption>
+    <colgroup>
+      <col style="width:85px" />
+      <col style="width:150px" />
+      <col />
+      <col style="width:120px" />
+      <col style="width:140px" />
+      <col style="width:85px" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">{head[0]}</th>
+        <th scope="col" style="text-align:left;">{head[1]}</th>
+        <th scope="col">{head[2]}</th>
+        <th scope="col">{head[3]}</th>
+        <th scope="col">{head[4]}</th>
+        <th scope="col">{head[5]}</th>
+      </tr>
+    </thead>
+    <tbody id="boardBody">
+      {sorted.map((e) => {
+        const isNotice = Number.isNaN(parseInt(e.data.no, 10));
+        return (
+          <tr data-cat={e.data.category} data-title={e.data.title.toLowerCase()}>
+            <td>{isNotice ? <span class="label">{ui.notice}</span> : e.data.no}</td>
+            <td class="cate">{e.data.category}</td>
+            <td class="subject">
+              <a href={`${p}/${kind}/${e.data.idx}`} title={e.data.title}>{e.data.title}</a>
+              {e.data.attachments.length > 0 && (
+                <img src="/images/bbs/icon_file.png" alt={ui.attach} class="file-icon" />
+              )}
+            </td>
+            <td>{e.data.author}</td>
+            <td>{e.data.date}</td>
+            <td>{e.data.hits}</td>
+          </tr>
+        );
+      })}
+      <tr id="boardEmpty" hidden><td colspan="6" class="empty">{bui.empty}</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="paginate" id="boardPaginate" data-first={bui.first} data-last={bui.last} data-per={PER_PAGE}></div>
+
+<script is:inline>
+  (function () {
+    var body = document.getElementById('boardBody');
+    var box = document.getElementById('boardPaginate');
+    if (!body || !box) return;
+
+    var per = parseInt(box.getAttribute('data-per'), 10) || 10;
+    var firstLabel = box.getAttribute('data-first');
+    var lastLabel = box.getAttribute('data-last');
+    var emptyRow = document.getElementById('boardEmpty');
+    var totalEl = document.getElementById('boardTotal');
+    var cateSel = document.getElementById('boardCate');
+    var keyword = document.getElementById('keyword');
+    var searchBtn = document.getElementById('boardSearch');
+
+    var all = Array.prototype.filter.call(body.children, function (tr) {
+      return tr.id !== 'boardEmpty';
+    });
+    var matched = all;
+    var page = 1;
+
+    function applyFilter() {
+      var cat = cateSel ? cateSel.value : '';
+      var kw = keyword ? keyword.value.trim().toLowerCase() : '';
+      matched = all.filter(function (tr) {
+        if (cat && tr.getAttribute('data-cat') !== cat) return false;
+        if (kw && (tr.getAttribute('data-title') || '').indexOf(kw) === -1) return false;
+        return true;
+      });
+      page = 1;
+      if (totalEl) totalEl.textContent = String(matched.length);
+      render();
+    }
+
+    function render() {
+      var pages = Math.max(1, Math.ceil(matched.length / per));
+      if (page > pages) page = pages;
+      var from = (page - 1) * per;
+      var to = from + per;
+
+      all.forEach(function (tr) { tr.hidden = true; });
+      matched.slice(from, to).forEach(function (tr) { tr.hidden = false; });
+      if (emptyRow) emptyRow.hidden = matched.length !== 0;
+
+      box.innerHTML = '';
+      if (matched.length === 0) return;
+
+      box.appendChild(link(firstLabel, 1, page === 1, 'direction first'));
+      for (var i = 1; i <= pages; i++) {
+        if (i === page) {
+          var s = document.createElement('strong');
+          s.textContent = String(i);
+          box.appendChild(s);
+        } else {
+          box.appendChild(link(String(i), i, false, ''));
+        }
+      }
+      box.appendChild(link(lastLabel, pages, page === pages, 'direction last'));
+    }
+
+    function link(text, target, disabled, cls) {
+      var a = document.createElement('a');
+      a.href = '#';
+      a.title = text;
+      if (cls) {
+        a.className = cls + (disabled ? ' disabled' : '');
+        var sp = document.createElement('span');
+        sp.textContent = text;
+        a.appendChild(sp);
+      } else {
+        a.textContent = text;
+      }
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        if (disabled) return;
+        page = target;
+        render();
+        var list = document.querySelector('.board-list');
+        if (list) list.scrollIntoView({ block: 'start' });
+      });
+      return a;
+    }
+
+    if (cateSel) cateSel.addEventListener('change', applyFilter);
+    if (searchBtn) searchBtn.addEventListener('click', function (e) { e.preventDefault(); applyFilter(); });
+    if (keyword) keyword.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); applyFilter(); }
+    });
+
+    render();
+  })();
+</script>
+
+<style>
+  .board-list .file-icon { margin-left: 6px; vertical-align: middle; }
+  .board-list td.empty { text-align: center; padding: 40px 0; color: #666; }
+</style>

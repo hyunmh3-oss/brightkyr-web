@@ -1,0 +1,36 @@
+/*
+  NanumSquare — 자체 호스팅
+  원본 사이트는 cdn.rawgit.com 에서 불러왔으나(2018년 서비스 종료 공지된 CDN),
+  언제 사라져도 이상하지 않아 폰트 파일을 내려받아 직접 서빙합니다.
+  화면 표시는 원본과 동일합니다.
+
+  NanumSquare (c) NAVER Corp. — SIL Open Font License 1.1
+*/
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/nanumsquare/NanumSquareL.woff2') format('woff2'),
+       url('/fonts/nanumsquare/NanumSquareL.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/nanumsquare/NanumSquareR.woff2') format('woff2'),
+       url('/fonts/nanumsquare/NanumSquareR.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/nanumsquare/NanumSquareB.woff2') format('woff2'),
+       url('/fonts/nanumsquare/NanumSquareB.woff') format('woff');
+}
+@font-face {
+  font-family: 'NanumSquare';
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/nanumsquare/NanumSquareEB.woff2') format('woff2'),
+       url('/fonts/nanumsquare/NanumSquareEB.woff') format('woff');
+}

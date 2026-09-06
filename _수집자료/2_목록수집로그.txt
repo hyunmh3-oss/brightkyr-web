@@ -1,0 +1,11 @@
+﻿=== 목록 수집 시작 2026-09-06 17:16:59 ===
+news: 55건
+news_en: 37건
+news_kg: 41건
+news_ru: 48건
+social: 179건
+social_en: 93건
+social_kg: 141건
+social_ru: 175건
+합계 769건
+=== 완료 17:17:25 ===

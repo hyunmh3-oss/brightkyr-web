@@ -1,0 +1,154 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import type { CollectionEntry } from 'astro:content';
+import { prefix, VIEW_UI, type Lang } from '../i18n/nav';
+
+export interface Props {
+  lang: Lang;
+  kind: 'news' | 'social';
+  entry: CollectionEntry<'news' | 'social'>;
+  /** 목록에서 한 칸 아래 = 예전 글 */
+  prevEntry?: CollectionEntry<'news' | 'social'>;
+  /** 목록에서 한 칸 위 = 최신 글 */
+  nextEntry?: CollectionEntry<'news' | 'social'>;
+  body: string;
+}
+const { lang, kind, entry, prevEntry, nextEntry, body } = Astro.props;
+const p = prefix(lang);
+const v = VIEW_UI[lang];
+const d = entry.data;
+
+/** YouTube 주소에서 영상 ID 추출 */
+function ytId(url: string) {
+  const m = url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : '';
+}
+const yt = d.youtube ? ytId(d.youtube) : '';
+
+/**
+ * 첨부 가운데 실제로 public/files 에 들어 있는 것만 내려받기 링크로 만든다.
+ * 25 MB 를 넘어 아직 올리지 못한 영상·문서(보류작업.md 참고)는
+ * 죽은 링크 대신 이름만 남겨 둔다.
+ */
+const filesRoot = path.join(process.cwd(), 'public');
+function exists(rel: string) {
+  try {
+    return fs.existsSync(path.join(filesRoot, decodeURIComponent(rel).replace(/^\//, '')));
+  } catch {
+    return false;
+  }
+}
+const attachments = d.attachments.map((a) => ({ ...a, ok: exists(a.file) }));
+---
+
+<div class="board-view">
+  <div class="board-view-tit">
+    <h3>{d.title}</h3>
+  </div>
+
+  <div class="board-view-info">
+    {d.author && <span class="name"><strong>{d.author}</strong></span>}
+    {d.date && <span class="date">{d.date}</span>}
+    {d.hits && <span class="hit"><strong>{v.hit}</strong> {d.hits}</span>}
+  </div>
+
+  {attachments.length > 0 && (
+    <div class="board-view-files">
+      <a href="javascript:;" class="fileToggle">
+        {v.attach}<span class="num">(<strong>{attachments.length}</strong>)</span>
+        <img src="/images/bbs/file_down.gif" class="ico-down" alt={v.attach} />
+      </a>
+      <div class="fileLayer" id="fileLayer">
+        {attachments.map((a) =>
+          a.ok ? (
+            <a href={a.file} title={a.name} download>
+              <img src="/images/bbs/file_ico.gif" alt={v.attach} /> {a.name}
+            </a>
+          ) : (
+            <span class="file-pending" title={a.name}>
+              <img src="/images/bbs/file_ico.gif" alt={v.attach} /> {a.name}
+            </span>
+          )
+        )}
+        <a href="javascript:;" class="divClose fileToggle" title={v.closeLayer}>
+          <img src="/images/bbs/file_close.gif" alt={v.closeLayer} />
+        </a>
+      </div>
+    </div>
+  )}
+
+  <div class="board-view-cnt">
+    {yt && (
+      <div class="video-wrap">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${yt}`}
+          title={d.title}
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    )}
+    <Fragment set:html={body} />
+  </div>
+</div>
+
+<div class="buttons">
+  <div class="fr">
+    <a href={`${p}/${kind}`} class="btn-pack medium" title={v.list}>{v.list}</a>
+  </div>
+</div>
+
+<div class="board-prev-next">
+  <dl class="prev">
+    <dt>{v.newer}</dt>
+    <dd>
+      {nextEntry
+        ? <a href={`${p}/${kind}/${nextEntry.data.idx}`} title={nextEntry.data.title}>{nextEntry.data.title}</a>
+        : <span>-</span>}
+    </dd>
+  </dl>
+  <dl class="next">
+    <dt>{v.older}</dt>
+    <dd>
+      {prevEntry
+        ? <a href={`${p}/${kind}/${prevEntry.data.idx}`} title={prevEntry.data.title}>{prevEntry.data.title}</a>
+        : <span>-</span>}
+    </dd>
+  </dl>
+</div>
+
+<script is:inline>
+  (function () {
+    var layer = document.getElementById('fileLayer');
+    if (!layer) return;
+    layer.style.display = 'none';
+    Array.prototype.forEach.call(document.querySelectorAll('.fileToggle'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        layer.style.display = layer.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .file-pending { display: block; color: #999; }
+  .board-view-cnt :global(img) { max-width: 100%; height: auto; }
+  .board-view-cnt :global(table) { max-width: 100%; }
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    margin: 16px 0 24px;
+    background: #000;
+  }
+  .video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

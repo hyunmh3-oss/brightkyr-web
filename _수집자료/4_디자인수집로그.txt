@@ -1,0 +1,24 @@
+﻿=== 디자인 자산 수집 17:18:35 ===
+FAIL https://brightkyr.khu.ac.kr/images/sub/overview.jpg
+HTML 참조 자산: ok=100 skip=0 fail=1 / 총 101
+FAIL https://brightkyr.khu.ac.kr/images/sub/icon_prev.png
+FAIL https://brightkyr.khu.ac.kr/images/sub/icon_next.png
+FAIL https://brightkyr.khu.ac.kr/images/common/sv1.jpg
+FAIL https://brightkyr.khu.ac.kr/images/common/sv2.jpg
+FAIL https://brightkyr.khu.ac.kr/images/common/sv3.jpg
+FAIL https://brightkyr.khu.ac.kr/images/common/sv4.jpg
+FAIL https://brightkyr.khu.ac.kr/images/common/sv5.jpg
+FAIL https://brightkyr.khu.ac.kr/images/sub/more_icon.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/icon_minus.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/icon_plus.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/select.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/selectup.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/slide_prev.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/slide_next.png
+FAIL https://brightkyr.khu.ac.kr/images/main/wish.png
+FAIL https://brightkyr.khu.ac.kr/images/sub/pop_close.png
+FAIL https://brightkyr.khu.ac.kr/images/shop/star.png
+CSS 참조 자산: ok=90 skip=0 fail=17 / 총 107
+FAIL https://brightkyr.khu.ac.kr/uploaded/board/news/t_b083f81c91ecc3c4d94daec4a9c496820.png
+업로드 이미지(목록): ok=118 skip=0 fail=1 / 총 119
+=== 완료 17:20:42 ===
