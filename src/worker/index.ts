@@ -257,29 +257,72 @@ async function handleLogout(request: Request, env: Env): Promise<Response> {
   return json({ ok: true }, 200, { 'Set-Cookie': `${COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0` });
 }
 
-/** 첨부 파일을 R2 에서 꺼내 내보낸다. 로그인한 사람만. */
+/** 화면에서 바로 재생·표시할 수 있는 종류 (내려받지 않고 그대로 보여준다) */
+function isPlayable(key: string) {
+  return /\.(mp4|webm|m4v|mp3|m4a|ogg|jpg|jpeg|png|gif|webp|pdf)$/i.test(key);
+}
+
+/**
+ * 첨부 파일을 R2 에서 꺼내 내보낸다. 로그인한 사람만.
+ *
+ * 영상은 `inline` 으로 내보내고 Range 요청을 지원한다.
+ * 그래야 브라우저가 통째로 받지 않고 재생하면서 앞뒤로 넘길 수 있다.
+ * `?dl=1` 을 붙이면 재생 대신 내려받기가 된다.
+ */
 async function handleFile(request: Request, env: Env, key: string): Promise<Response> {
   const me = await currentMember(request, env);
   if (!me) return new Response('Unauthorized', { status: 401 });
 
-  const obj = await env.LIBRARY.get(key);
+  const url = new URL(request.url);
+  const forceDownload = url.searchParams.get('dl') === '1';
+  const inline = !forceDownload && isPlayable(key);
+
+  // 브라우저가 "이 구간만 달라"고 하면 그 부분만 보낸다 (영상 재생·이동)
+  const rangeHeader = request.headers.get('Range');
+  let range: R2Range | undefined;
+  if (rangeHeader) {
+    const m = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
+    if (m) {
+      const start = m[1] ? parseInt(m[1], 10) : undefined;
+      const end = m[2] ? parseInt(m[2], 10) : undefined;
+      if (start !== undefined && end !== undefined) range = { offset: start, length: end - start + 1 };
+      else if (start !== undefined) range = { offset: start };
+      else if (end !== undefined) range = { suffix: end };
+    }
+  }
+
+  const obj = await env.LIBRARY.get(key, range ? { range, onlyIf: request.headers } : undefined);
   if (!obj) return new Response('Not Found', { status: 404 });
+  if (!('body' in obj) || !obj.body) return new Response(null, { status: 304 });
 
-  // 누가 무엇을 받아갔는지 남긴다
-  await env.DB.prepare('INSERT INTO downloads (member_id, key, at) VALUES (?1, ?2, datetime(\'now\'))')
-    .bind(me.id, key)
-    .run();
+  // 누가 무엇을 받아갔는지 남긴다. 재생 중 이어받기는 한 번만 세도록 첫 구간만 기록한다.
+  const firstChunk = !range || (range as { offset?: number }).offset === 0 || (range as { offset?: number }).offset === undefined;
+  if (firstChunk) {
+    await env.DB.prepare("INSERT INTO downloads (member_id, key, at) VALUES (?1, ?2, datetime('now'))")
+      .bind(me.id, key)
+      .run();
+  }
 
-  const name = new URL(request.url).searchParams.get('name') ?? key.split('/').pop() ?? 'file';
+  const name = url.searchParams.get('name') ?? key.split('/').pop() ?? 'file';
   const headers = new Headers();
   obj.writeHttpMetadata(headers);
-  headers.set('Content-Length', String(obj.size));
+  headers.set('Accept-Ranges', 'bytes');
   headers.set('Cache-Control', 'private, no-store');
   // 파일 이름에 러시아어·한국어가 들어가므로 RFC 5987 형식으로 함께 적는다
   headers.set(
     'Content-Disposition',
-    `attachment; filename="download"; filename*=UTF-8''${encodeURIComponent(name)}`
+    `${inline ? 'inline' : 'attachment'}; filename="file"; filename*=UTF-8''${encodeURIComponent(name)}`
   );
+
+  if (obj.range && 'offset' in obj.range) {
+    const start = obj.range.offset ?? 0;
+    const len = obj.range.length ?? obj.size - start;
+    headers.set('Content-Range', `bytes ${start}-${start + len - 1}/${obj.size}`);
+    headers.set('Content-Length', String(len));
+    return new Response(obj.body, { status: 206, headers });
+  }
+
+  headers.set('Content-Length', String(obj.size));
   return new Response(obj.body, { headers });
 }
 
