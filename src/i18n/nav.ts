@@ -16,8 +16,11 @@ export function prefix(lang: Lang) {
 
 export interface NavItem {
   label: string;
+  /** 언어 접두사가 앞에 붙는다. `abs` 가 true 면 그대로 쓴다. */
   href: string;
-  children?: { label: string; href: string }[];
+  /** 다른 언어판을 가리킬 때 true (예: 한국어 메뉴의 자료실 → 러시아어판) */
+  abs?: boolean;
+  children?: { label: string; href: string; abs?: boolean }[];
 }
 
 /**
@@ -53,10 +56,13 @@ export const NAV: Record<Lang, NavItem[]> = {
         { label: '사회적 영향', href: '/social' },
       ],
     },
+    // 자료 97건이 전부 러시아어라 자료실은 러시아어판에만 둔다.
+    // 원본 한국어 메뉴도 러시아어판 자료실로 연결돼 있었다.
     {
       label: '자료실',
-      href: '/library',
-      children: [{ label: '자료실', href: '/library' }],
+      href: '/ru/library',
+      abs: true,
+      children: [{ label: '자료실', href: '/ru/library', abs: true }],
     },
   ],
 

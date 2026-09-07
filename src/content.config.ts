@@ -73,4 +73,36 @@ const popups = defineCollection({
   }),
 });
 
-export const collections = { news, social, pages, popups };
+/**
+ * 자료실(회원 전용). 원본의 러시아어판 `pds_ru` 게시판을 옮긴 것.
+ *
+ * 글 본문은 여기에 두지만 **Worker 가 /ru/library/* 앞을 지킨다.**
+ * 첨부 파일은 저장소에 넣지 않고 R2 에 두며, `key` 로만 가리킨다.
+ * (파일을 public/ 에 넣으면 주소만 알면 누구나 받아가 회원제가 무의미해진다.)
+ */
+const library = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './content/library' }),
+  schema: z.object({
+    title: z.string().default(''),
+    lang: z.enum(['ko', 'en', 'ky', 'ru']),
+    idx: z.string(),
+    /** 비우면 목록에서 '공지' 로 표시되고 맨 위로 올라간다 */
+    no: z.string().default(''),
+    category: z.string().default(''),
+    author: z.string().default(''),
+    date: z.string().default(''),
+    hits: z.string().default('0'),
+    attachments: z
+      .array(
+        z.object({
+          name: z.string(),
+          /** R2 안의 위치. 내려받기는 /ru/library/file/<key> 로 요청한다 */
+          key: z.string(),
+          size: z.number().default(0),
+        })
+      )
+      .default([]),
+  }),
+});
+
+export const collections = { news, social, pages, popups, library };

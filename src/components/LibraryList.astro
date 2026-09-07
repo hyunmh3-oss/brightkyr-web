@@ -1,0 +1,188 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { LIB, LIB_CATS } from '../i18n/library';
+
+export interface Props {
+  posts: CollectionEntry<'library'>[];
+}
+const { posts } = Astro.props;
+const t = LIB.ru;
+
+/**
+ * 원본과 같이 한 쪽에 10건씩 보여준다.
+ * 정적 사이트라 서버가 없으므로 전체를 내려보내고 브라우저에서 걸러 보여준다.
+ * (자료실은 Worker 가 로그인 확인을 마친 뒤에만 이 페이지를 내보낸다.)
+ */
+const PER_PAGE = 10;
+
+function isNotice(e: CollectionEntry<'library'>) {
+  return Number.isNaN(parseInt(e.data.no, 10));
+}
+const sorted = [...posts].sort((a, b) => {
+  const an = isNotice(a);
+  const bn = isNotice(b);
+  if (an !== bn) return an ? -1 : 1;
+  if (an) return parseInt(b.data.idx, 10) - parseInt(a.data.idx, 10);
+  return parseInt(b.data.no, 10) - parseInt(a.data.no, 10);
+});
+
+const used = new Set(sorted.map((x) => x.data.category).filter(Boolean));
+const cats = [...LIB_CATS.filter((c) => used.has(c)), ...[...used].filter((c) => !LIB_CATS.includes(c))];
+---
+
+<div class="board-search">
+  <form onsubmit="return false;">
+    <div class="total-page">{t.all} : <span id="boardTotal">{sorted.length}</span></div>
+    <div class="cate">
+      <select id="boardCate" class="input" title={t.th[1]}>
+        <option value="">{t.all}</option>
+        {cats.map((c) => <option value={c}>{c}</option>)}
+      </select>
+    </div>
+    <div class="search">
+      <input type="text" id="keyword" class="input" placeholder={t.keyword} />
+      <button type="submit" class="btn-pack medium focus" id="boardSearch">{t.search}</button>
+    </div>
+  </form>
+</div>
+
+<div class="board-list">
+  <table>
+    <caption>{t.library}</caption>
+    <colgroup>
+      <col style="width:85px" />
+      <col style="width:230px" />
+      <col />
+      <col style="width:120px" />
+      <col style="width:140px" />
+      <col style="width:85px" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">{t.th[0]}</th>
+        <th scope="col" style="text-align:left;">{t.th[1]}</th>
+        <th scope="col">{t.th[2]}</th>
+        <th scope="col">{t.th[3]}</th>
+        <th scope="col">{t.th[4]}</th>
+        <th scope="col">{t.th[5]}</th>
+      </tr>
+    </thead>
+    <tbody id="boardBody">
+      {sorted.map((e) => (
+        <tr data-cat={e.data.category} data-title={e.data.title.toLowerCase()}>
+          <td>{isNotice(e) ? <span class="label">{t.notice}</span> : e.data.no}</td>
+          <td class="cate">{e.data.category}</td>
+          <td class="subject">
+            <a href={`/ru/library/${e.data.idx}`} title={e.data.title}>{e.data.title}</a>
+            {e.data.attachments.length > 0 && (
+              <img src="/images/bbs/icon_file.png" alt={t.attach} class="file-icon" />
+            )}
+          </td>
+          <td>{e.data.author}</td>
+          <td>{e.data.date}</td>
+          <td>{e.data.hits}</td>
+        </tr>
+      ))}
+      <tr id="boardEmpty" hidden><td colspan="6" class="empty">{t.empty}</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="paginate" id="boardPaginate" data-first={t.first} data-last={t.last} data-per={PER_PAGE}></div>
+
+<script is:inline>
+  (function () {
+    var body = document.getElementById('boardBody');
+    var box = document.getElementById('boardPaginate');
+    if (!body || !box) return;
+
+    var per = parseInt(box.getAttribute('data-per'), 10) || 10;
+    var firstLabel = box.getAttribute('data-first');
+    var lastLabel = box.getAttribute('data-last');
+    var emptyRow = document.getElementById('boardEmpty');
+    var totalEl = document.getElementById('boardTotal');
+    var cateSel = document.getElementById('boardCate');
+    var keyword = document.getElementById('keyword');
+    var searchBtn = document.getElementById('boardSearch');
+
+    var all = Array.prototype.filter.call(body.children, function (tr) {
+      return tr.id !== 'boardEmpty';
+    });
+    var matched = all;
+    var page = 1;
+
+    function applyFilter() {
+      var cat = cateSel ? cateSel.value : '';
+      var kw = keyword ? keyword.value.trim().toLowerCase() : '';
+      matched = all.filter(function (tr) {
+        if (cat && tr.getAttribute('data-cat') !== cat) return false;
+        if (kw && (tr.getAttribute('data-title') || '').indexOf(kw) === -1) return false;
+        return true;
+      });
+      page = 1;
+      if (totalEl) totalEl.textContent = String(matched.length);
+      render();
+    }
+
+    function render() {
+      var pages = Math.max(1, Math.ceil(matched.length / per));
+      if (page > pages) page = pages;
+      var from = (page - 1) * per;
+
+      all.forEach(function (tr) { tr.hidden = true; });
+      matched.slice(from, from + per).forEach(function (tr) { tr.hidden = false; });
+      if (emptyRow) emptyRow.hidden = matched.length !== 0;
+
+      box.innerHTML = '';
+      if (matched.length === 0) return;
+
+      box.appendChild(link(firstLabel, 1, page === 1, 'direction first'));
+      for (var i = 1; i <= pages; i++) {
+        if (i === page) {
+          var s = document.createElement('strong');
+          s.textContent = String(i);
+          box.appendChild(s);
+        } else {
+          box.appendChild(link(String(i), i, false, ''));
+        }
+      }
+      box.appendChild(link(lastLabel, pages, page === pages, 'direction last'));
+    }
+
+    function link(text, target, disabled, cls) {
+      var a = document.createElement('a');
+      a.href = '#';
+      a.title = text;
+      if (cls) {
+        a.className = cls + (disabled ? ' disabled' : '');
+        var sp = document.createElement('span');
+        sp.textContent = text;
+        a.appendChild(sp);
+      } else {
+        a.textContent = text;
+      }
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        if (disabled) return;
+        page = target;
+        render();
+        var list = document.querySelector('.board-list');
+        if (list) list.scrollIntoView({ block: 'start' });
+      });
+      return a;
+    }
+
+    if (cateSel) cateSel.addEventListener('change', applyFilter);
+    if (searchBtn) searchBtn.addEventListener('click', function (e) { e.preventDefault(); applyFilter(); });
+    if (keyword) keyword.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); applyFilter(); }
+    });
+
+    render();
+  })();
+</script>
+
+<style>
+  .board-list .file-icon { margin-left: 6px; vertical-align: middle; }
+  .board-list td.empty { text-align: center; padding: 40px 0; color: #666; }
+</style>

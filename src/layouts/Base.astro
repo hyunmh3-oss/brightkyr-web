@@ -118,12 +118,12 @@ const fontCss: Record<Lang, string[]> = {
             <ul>
               {nav.map((n) => (
                 <li>
-                  <a href={p + n.href}><span>{n.label}</span></a>
+                  <a href={n.abs ? n.href : p + n.href}><span>{n.label}</span></a>
                   {n.children && n.children.length > 0 && (
                     <div class="submenu">
                       <ul>
                         {n.children.map((c) => (
-                          <li><a href={p + c.href}>{c.label}</a></li>
+                          <li><a href={c.abs ? c.href : p + c.href}>{c.label}</a></li>
                         ))}
                       </ul>
                     </div>
@@ -134,6 +134,18 @@ const fontCss: Record<Lang, string[]> = {
           </div>
 
           <div class="util">
+            {/*
+              회원 로그인 링크 — 원본과 같이 자료실이 있는 언어에만 둔다.
+              자료실이 러시아어판에만 있으므로 한국어는 러시아어 로그인 화면으로 보낸다.
+              로그인 여부는 브라우저에서 확인해 바꿔 넣는다(정적 페이지라 서버가 모른다).
+            */}
+            {(lang === 'ko' || lang === 'ru') && (
+              <div class="member-util" data-lang={lang}>
+                <a href="/ru/member/login" class="m-login">{lang === 'ko' ? '로그인' : 'Войти (Login)'}</a>
+                <a href="/ru/member/join" class="m-join">{lang === 'ko' ? '회원가입' : 'Присоединиться (Join)'}</a>
+                <a href="javascript:;" class="m-logout" hidden>{lang === 'ko' ? '로그아웃' : 'Выйти (Logout)'}</a>
+              </div>
+            )}
             <div class="language">
               <a href="javascript:;">{LANG_LABEL[lang]}</a>
               <ul>
@@ -216,6 +228,29 @@ const fontCss: Record<Lang, string[]> = {
         </div>
       </div>
     </div>
+
+    <script is:inline>
+      /* 로그인 상태에 따라 헤더의 링크를 바꾼다. 로그인하지 않았으면 그대로 둔다. */
+      (function () {
+        var box = document.querySelector('.member-util');
+        if (!box) return;
+        fetch('/api/auth/me', { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            if (!j || !j.ok) return;
+            box.querySelector('.m-login').hidden = true;
+            box.querySelector('.m-join').hidden = true;
+            var out = box.querySelector('.m-logout');
+            out.hidden = false;
+            out.addEventListener('click', function (e) {
+              e.preventDefault();
+              fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' })
+                .then(function () { location.href = box.getAttribute('data-lang') === 'ko' ? '/' : '/ru/'; });
+            });
+          })
+          .catch(function () {});
+      })();
+    </script>
 
     <script is:inline src="/js/jquery-1.11.1.min.js"></script>
     <script is:inline src="/js/jquery.ui.js"></script>

@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { LIB, fileSize } from '../i18n/library';
+
+export interface Props {
+  entry: CollectionEntry<'library'>;
+  /** 목록에서 한 칸 아래 = 예전 글 */
+  prevEntry?: CollectionEntry<'library'>;
+  /** 목록에서 한 칸 위 = 최신 글 */
+  nextEntry?: CollectionEntry<'library'>;
+  body: string;
+}
+const { entry, prevEntry, nextEntry, body } = Astro.props;
+const t = LIB.ru;
+const d = entry.data;
+
+/**
+ * 첨부는 R2 에 있고 Worker 를 통해서만 나간다.
+ * `name` 을 붙여 보내면 받을 때 원래 이름으로 저장된다.
+ */
+function fileUrl(key: string, name: string) {
+  return `/ru/library/file/${key}?name=${encodeURIComponent(name)}`;
+}
+---
+
+<div class="board-view">
+  <div class="board-view-tit">
+    <h3>{d.title}</h3>
+  </div>
+
+  <div class="board-view-info">
+    {d.author && <span class="name"><strong>{d.author}</strong></span>}
+    {d.date && <span class="date">{d.date}</span>}
+    {d.hits && <span class="hit"><strong>{t.hit}</strong> {d.hits}</span>}
+  </div>
+
+  {d.attachments.length > 0 && (
+    <div class="board-view-files">
+      <a href="javascript:;" class="fileToggle">
+        {t.attach}<span class="num">(<strong>{d.attachments.length}</strong>)</span>
+        <img src="/images/bbs/file_down.gif" class="ico-down" alt={t.attach} />
+      </a>
+      <div class="fileLayer" id="fileLayer">
+        {d.attachments.map((a) => (
+          <a href={fileUrl(a.key, a.name)} title={a.name}>
+            <img src="/images/bbs/file_ico.gif" alt={t.attach} /> {a.name}
+            {a.size > 0 && <span class="fsize"> ({fileSize(a.size)})</span>}
+          </a>
+        ))}
+        <a href="javascript:;" class="divClose fileToggle" title={t.attach}>
+          <img src="/images/bbs/file_close.gif" alt={t.attach} />
+        </a>
+      </div>
+    </div>
+  )}
+
+  <div class="board-view-cnt" set:html={body} />
+</div>
+
+<div class="buttons">
+  <div class="fr">
+    <a href="/ru/library" class="btn-pack medium" title={t.list}>{t.list}</a>
+  </div>
+</div>
+
+<div class="board-prev-next">
+  <dl class="prev">
+    <dt>{t.newer}</dt>
+    <dd>
+      {nextEntry
+        ? <a href={`/ru/library/${nextEntry.data.idx}`} title={nextEntry.data.title}>{nextEntry.data.title}</a>
+        : <span>-</span>}
+    </dd>
+  </dl>
+  <dl class="next">
+    <dt>{t.older}</dt>
+    <dd>
+      {prevEntry
+        ? <a href={`/ru/library/${prevEntry.data.idx}`} title={prevEntry.data.title}>{prevEntry.data.title}</a>
+        : <span>-</span>}
+    </dd>
+  </dl>
+</div>
+
+<script is:inline>
+  (function () {
+    var layer = document.getElementById('fileLayer');
+    if (!layer) return;
+    layer.style.display = 'none';
+    Array.prototype.forEach.call(document.querySelectorAll('.fileToggle'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        layer.style.display = layer.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .board-view-cnt :global(img) { max-width: 100%; height: auto; }
+  .board-view-cnt :global(table) { max-width: 100%; }
+  .fsize { color: #888; }
+</style>

@@ -1,9 +1,44 @@
 {
-  // Cloudflare 배포 설정 (정적 사이트 — Worker 스크립트 없이 파일만 서빙)
+  // Cloudflare 배포 설정
+  //
+  // 사이트는 정적 파일이지만, 자료실(/ru/library)만 회원 확인이 필요해서
+  // 그 앞에만 Worker 스크립트를 둔다.
+  //
+  // run_worker_first 에 적힌 경로만 Worker 를 거친다.
+  // 나머지 페이지·이미지·글꼴은 그대로 나가므로 요금이 들지 않는다.
   "name": "brightkyr",
+  "main": "src/worker/index.ts",
   "compatibility_date": "2026-09-06",
+  "compatibility_flags": ["nodejs_compat"],
+
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/ru/library", "/ru/library/*", "/api/*"]
+  },
+
+  // 회원·세션·내려받기 기록
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "brightkyr-members",
+      "database_id": "3c6dd17f-884a-40ed-86a7-48ddc80005ab"
+    }
+  ],
+
+  // 자료실 첨부 파일 148개 (742.6 MB)
+  // 공개 액세스는 꺼져 있고 Worker 를 통해서만 나간다.
+  "r2_buckets": [
+    {
+      "binding": "LIBRARY",
+      "bucket_name": "brightkyr-library"
+    }
+  ]
+
+  // TURNSTILE_SECRET 은 비밀값이라 여기에 적지 않는다.
+  //   wrangler secret put TURNSTILE_SECRET
+  // 워커를 다시 배포하면 지워질 수 있으므로 아래 keep_vars 를 켜 둔다.
+  ,
+  "keep_vars": true
 }
