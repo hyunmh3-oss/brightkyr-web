@@ -1,8 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { LIB, fileSize } from '../i18n/library';
+import { prefix, type Lang } from '../i18n/nav';
 
 export interface Props {
+  lang: Lang;
   entry: CollectionEntry<'library'>;
   /** 목록에서 한 칸 아래 = 예전 글 */
   prevEntry?: CollectionEntry<'library'>;
@@ -10,8 +12,9 @@ export interface Props {
   nextEntry?: CollectionEntry<'library'>;
   body: string;
 }
-const { entry, prevEntry, nextEntry, body } = Astro.props;
-const t = LIB.ru;
+const { lang, entry, prevEntry, nextEntry, body } = Astro.props;
+const t = LIB[lang];
+const p = prefix(lang);
 const d = entry.data;
 
 /**
@@ -19,7 +22,7 @@ const d = entry.data;
  * `name` 을 붙여 보내면 받을 때 원래 이름으로 저장된다.
  */
 function fileUrl(key: string, name: string) {
-  return `/ru/library/file/${key}?name=${encodeURIComponent(name)}`;
+  return `${p}/library/file/${key}?name=${encodeURIComponent(name)}`;
 }
 ---
 
@@ -59,7 +62,7 @@ function fileUrl(key: string, name: string) {
 
 <div class="buttons">
   <div class="fr">
-    <a href="/ru/library" class="btn-pack medium" title={t.list}>{t.list}</a>
+    <a href={`${p}/library`} class="btn-pack medium" title={t.list}>{t.list}</a>
   </div>
 </div>
 
@@ -68,7 +71,7 @@ function fileUrl(key: string, name: string) {
     <dt>{t.newer}</dt>
     <dd>
       {nextEntry
-        ? <a href={`/ru/library/${nextEntry.data.idx}`} title={nextEntry.data.title}>{nextEntry.data.title}</a>
+        ? <a href={`${p}/library/${nextEntry.data.idx}`} title={nextEntry.data.title}>{nextEntry.data.title}</a>
         : <span>-</span>}
     </dd>
   </dl>
@@ -76,7 +79,7 @@ function fileUrl(key: string, name: string) {
     <dt>{t.older}</dt>
     <dd>
       {prevEntry
-        ? <a href={`/ru/library/${prevEntry.data.idx}`} title={prevEntry.data.title}>{prevEntry.data.title}</a>
+        ? <a href={`${p}/library/${prevEntry.data.idx}`} title={prevEntry.data.title}>{prevEntry.data.title}</a>
         : <span>-</span>}
     </dd>
   </dl>

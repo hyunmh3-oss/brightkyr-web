@@ -1,12 +1,12 @@
 /**
  * 자료실·회원 화면 문구.
  *
- * 자료실은 **러시아어판에만** 있다 (자료 97건이 전부 러시아어이고
- * 원본도 러시아어판 `pds_ru` 에만 실제 자료가 있었다).
- * 그래서 러시아어를 기본으로 쓰되, 관리자가 확인할 때를 위해 한국어도 함께 둔다.
+ * 자료(97건)는 전부 러시아어지만 **화면 껍데기는 보던 언어 그대로** 나와야 한다.
+ * 한국어로 보다가 자료실에 들어갔는데 사이트가 통째로 러시아어로 바뀌면 이상하다.
+ * 그래서 목록·글보기·로그인·가입 화면을 4개 언어로 모두 만든다.
  */
 
-export type UiLang = 'ru' | 'ko';
+export type UiLang = 'ko' | 'en' | 'ky' | 'ru';
 
 export const LIB = {
   ru: {
@@ -112,6 +112,108 @@ export const LIB = {
     newer: '다음글',
     older: '이전글',
     th: ['번호', '카테고리', '제목', '작성자', '등록일', '조회'],
+    first: '처음페이지',
+    last: '마지막페이지',
+  },
+
+  en: {
+    library: 'Document Archive',
+    login: 'Login',
+    join: 'Join',
+    logout: 'Logout',
+    mypage: 'My page',
+
+    idLabel: 'ID',
+    pwLabel: 'Password',
+    saveId: 'Remember my ID',
+    loginBtn: 'Login',
+    toJoin: 'No account yet? Sign up',
+    loginNeeded: 'This archive is available to registered members only.',
+
+    joinTitle: 'Sign up',
+    nameLabel: 'Name',
+    emailLabel: 'E-mail',
+    pwConfirm: 'Confirm password',
+    agreeAll: 'Agree to all',
+    agreeTerms: 'Terms of use (required)',
+    agreePrivacy: 'Collection and use of personal information (required)',
+    detail: 'Details',
+    joinBtn: 'Sign up',
+    toLogin: 'Already a member? Log in',
+
+    required: 'Please fill in all required fields.',
+    pwMismatch: 'The passwords do not match.',
+    pwTooShort: 'The password must be at least 10 characters.',
+    idTaken: 'That ID is already taken.',
+    idRule: 'ID: 4–20 letters and digits.',
+    loginFailed: 'Incorrect ID or password.',
+    captchaNeeded: 'Please confirm that you are not a robot.',
+    captchaFailed: 'Verification failed. Please try again.',
+    joined: 'Sign-up complete. You can now log in.',
+    serverError: 'Server error. Please try again later.',
+
+    all: 'ALL',
+    search: 'Search',
+    keyword: 'Keyword',
+    empty: 'No posts found.',
+    notice: '공지',
+    attach: 'Attachment',
+    hit: 'Hit',
+    list: 'List',
+    newer: 'New post',
+    older: 'Old post',
+    th: ['No', 'Category', 'Title', 'Name', 'Registration Date', 'Hit'],
+    first: '처음페이지',
+    last: '마지막페이지',
+  },
+
+  ky: {
+    library: 'Документтердин архиви',
+    login: 'Кирүү',
+    join: 'Катталуу',
+    logout: 'Чыгуу',
+    mypage: 'Менин барагым',
+
+    idLabel: 'ID (Логин)',
+    pwLabel: 'Сырсөз',
+    saveId: 'Логинди эстеп калуу',
+    loginBtn: 'Кирүү',
+    toJoin: 'Аккаунтуңуз жокпу? Катталыңыз',
+    loginNeeded: 'Бул бөлүм катталган колдонуучулар үчүн гана.',
+
+    joinTitle: 'Катталуу',
+    nameLabel: 'Аты-жөнү',
+    emailLabel: 'Электрондук почта',
+    pwConfirm: 'Сырсөздү кайталаңыз',
+    agreeAll: 'Баарына макулмун',
+    agreeTerms: 'Колдонуу шарттары (милдеттүү)',
+    agreePrivacy: 'Жеке маалыматтарды иштетүү (милдеттүү)',
+    detail: 'Толугураак',
+    joinBtn: 'Катталуу',
+    toLogin: 'Аккаунтуңуз барбы? Кирүү',
+
+    required: 'Бардык талап кылынган талааларды толтуруңуз.',
+    pwMismatch: 'Сырсөздөр дал келбейт.',
+    pwTooShort: 'Сырсөз кеминде 10 белгиден турушу керек.',
+    idTaken: 'Бул логин мурунтан бар.',
+    idRule: 'Логин: 4–20 белги, латын тамгалары жана сандар.',
+    loginFailed: 'Логин же сырсөз туура эмес.',
+    captchaNeeded: 'Робот эместигиңизди ырастаңыз.',
+    captchaFailed: 'Текшерүү өтпөдү. Дагы аракет кылыңыз.',
+    joined: 'Катталуу аяктады. Эми кире аласыз.',
+    serverError: 'Сервер катасы. Кийинчерээк аракет кылыңыз.',
+
+    all: 'бүтүндөй',
+    search: 'Издөө',
+    keyword: 'издөө сөзү',
+    empty: 'Жазуу табылган жок.',
+    notice: '공지',
+    attach: 'Тиркеме',
+    hit: 'Көрүүлөр',
+    list: 'Тизме',
+    newer: 'Кийинки макала',
+    older: 'Мурунку макала',
+    th: ['№', 'Категория', 'Аталышы', 'Администратор', 'Дата', 'Көрүүлөр'],
     first: '처음페이지',
     last: '마지막페이지',
   },

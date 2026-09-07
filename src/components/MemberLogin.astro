@@ -1,12 +1,15 @@
 ---
 import { LIB } from '../i18n/library';
+import { prefix, type Lang } from '../i18n/nav';
 
 export interface Props {
+  lang: Lang;
   /** Turnstile 사이트 키 (공개값). 비우면 보안문자가 나오지 않는다. */
   siteKey: string;
 }
-const { siteKey } = Astro.props;
-const t = LIB.ru;
+const { lang, siteKey } = Astro.props;
+const t = LIB[lang];
+const p = prefix(lang);
 ---
 
 <div class="contain member-box">
@@ -30,7 +33,7 @@ const t = LIB.ru;
 
     {/* 로그인을 여러 번 틀린 뒤에만 나타난다 */}
     <div class="row captcha" id="captchaRow" hidden>
-      <div class="cf-turnstile" data-sitekey={siteKey} data-callback="bkCaptchaDone" data-language="ru"></div>
+      <div class="cf-turnstile" data-sitekey={siteKey} data-callback="bkCaptchaDone" data-language={lang}></div>
     </div>
 
     <p class="msg" id="msg" role="alert" hidden></p>
@@ -40,14 +43,14 @@ const t = LIB.ru;
     </div>
   </form>
 
-  <p class="alt"><a href="/ru/member/join">{t.toJoin}</a></p>
+  <p class="alt"><a href={`${p}/member/join`}>{t.toJoin}</a></p>
 </div>
 
 {siteKey && (
   <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
 )}
 
-<script is:inline define:vars={{ M: { failed: t.loginFailed, required: t.required, captcha: t.captchaNeeded, error: t.serverError } }}>
+<script is:inline define:vars={{ DEFAULT_NEXT: `${p}/library`, M: { failed: t.loginFailed, required: t.required, captcha: t.captchaNeeded, error: t.serverError } }}>
   (function () {
     var form = document.getElementById('loginForm');
     var msg = document.getElementById('msg');
@@ -89,7 +92,7 @@ const t = LIB.ru;
             if (saveId.checked) localStorage.setItem('bk_saved_id', username);
             else localStorage.removeItem('bk_saved_id');
           } catch (e) {}
-          var next = new URLSearchParams(location.search).get('next') || '/ru/library';
+          var next = new URLSearchParams(location.search).get('next') || DEFAULT_NEXT;
           location.href = next;
           return;
         }

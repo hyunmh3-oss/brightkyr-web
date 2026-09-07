@@ -67,22 +67,29 @@ export async function getStaticPaths() {
   }
 
   /**
-   * 자료실 — 러시아어판에만 있다.
-   * 자료 97건이 전부 러시아어이고 원본도 러시아어판에만 실제 자료가 있었다.
-   * 이 페이지들은 Worker 가 로그인을 확인한 뒤에만 내보낸다 (wrangler.jsonc 참고).
+   * 자료실 · 회원 화면 — 4개 언어 모두 만든다.
+   *
+   * 자료 97건은 전부 러시아어지만 **화면 껍데기는 보던 언어 그대로** 나와야 한다.
+   * 한국어로 보다가 자료실에 들어갔는데 사이트가 통째로 러시아어가 되면 이상하다.
+   *
+   * 자료실 페이지는 Worker 가 로그인을 확인한 뒤에만 내보낸다 (wrangler.jsonc 참고).
+   * 로그인·가입 화면은 누구나 볼 수 있어야 하므로 Worker 를 거치지 않는다.
    */
   const library = await getCollection('library');
-  out.push({ params: { path: 'ru/library' }, props: { kind: 'library', lang: 'ru' } });
-  for (const e of library) {
-    out.push({
-      params: { path: `ru/library/${e.data.idx}` },
-      props: { kind: 'libraryPost', lang: 'ru', entryId: e.id },
-    });
-  }
+  for (const lang of LANGS) {
+    const pre = lang === 'ko' ? '' : lang;
+    const at = (s: string) => [pre, s].filter(Boolean).join('/');
 
-  // 로그인 · 가입 (누구나 볼 수 있어야 하므로 Worker 를 거치지 않는다)
-  out.push({ params: { path: 'ru/member/login' }, props: { kind: 'login', lang: 'ru' } });
-  out.push({ params: { path: 'ru/member/join' }, props: { kind: 'join', lang: 'ru' } });
+    out.push({ params: { path: at('library') }, props: { kind: 'library', lang } });
+    for (const e of library) {
+      out.push({
+        params: { path: at(`library/${e.data.idx}`) },
+        props: { kind: 'libraryPost', lang, entryId: e.id },
+      });
+    }
+    out.push({ params: { path: at('member/login') }, props: { kind: 'login', lang } });
+    out.push({ params: { path: at('member/join') }, props: { kind: 'join', lang } });
+  }
 
   return out;
 }
@@ -174,7 +181,7 @@ if (kind === 'page') {
   bodyHtml = entry.body ?? '';
 } else if (kind === 'library') {
   libraryPosts = allLibrary;
-  title = LIB.ru.library;
+  title = LIB[lang].library;
   heading = title;
   breadcrumb = crumb(title);
 } else if (kind === 'libraryPost') {
@@ -191,15 +198,15 @@ if (kind === 'page') {
   prevEntry = mine[i + 1];
   nextEntry = mine[i - 1];
   title = entry.data.title;
-  heading = LIB.ru.library;
-  breadcrumb = crumb(LIB.ru.library);
+  heading = LIB[lang].library;
+  breadcrumb = crumb(LIB[lang].library);
   bodyHtml = entry.body ?? '';
 } else if (kind === 'login') {
-  title = LIB.ru.login;
+  title = LIB[lang].login;
   heading = title;
   breadcrumb = crumb(title);
 } else if (kind === 'join') {
-  title = LIB.ru.joinTitle;
+  title = LIB[lang].joinTitle;
   heading = title;
   breadcrumb = crumb(title);
 } else {
@@ -216,7 +223,15 @@ const currentPath =
         ? `/${(Astro.props as any).board}`
         : kind === 'post'
           ? `/${(Astro.props as any).board}`
-          : '/library';
+          : kind === 'library'
+            ? '/library'
+            : kind === 'libraryPost'
+              ? `/library/${entry?.data.idx}`
+              : kind === 'login'
+                ? '/member/login'
+                : kind === 'join'
+                  ? '/member/join'
+                  : '/library';
 
 /**
  * 원본은 고정 페이지에서 #contArea 에 class="wide"(본문 1265px)를 주고,
@@ -265,14 +280,14 @@ const libraryNotice = {
     )}
 
     {/* 자료실 — Worker 가 로그인을 확인한 뒤에만 여기까지 온다 */}
-    {kind === 'library' && <LibraryList posts={libraryPosts} />}
+    {kind === 'library' && <LibraryList lang={lang} posts={libraryPosts} />}
 
     {kind === 'libraryPost' && (
-      <LibraryDetail entry={entry} prevEntry={prevEntry} nextEntry={nextEntry} body={bodyHtml} />
+      <LibraryDetail lang={lang} entry={entry} prevEntry={prevEntry} nextEntry={nextEntry} body={bodyHtml} />
     )}
 
-    {kind === 'login' && <MemberLogin siteKey={TURNSTILE_SITE_KEY} />}
-    {kind === 'join' && <MemberJoin siteKey={TURNSTILE_SITE_KEY} />}
+    {kind === 'login' && <MemberLogin lang={lang} siteKey={TURNSTILE_SITE_KEY} />}
+    {kind === 'join' && <MemberJoin lang={lang} siteKey={TURNSTILE_SITE_KEY} />}
   </Base>
 )}
 

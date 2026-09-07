@@ -1,12 +1,15 @@
 ---
 import { LIB } from '../i18n/library';
+import { prefix, type Lang } from '../i18n/nav';
 
 export interface Props {
+  lang: Lang;
   /** Turnstile 사이트 키 (공개값) */
   siteKey: string;
 }
-const { siteKey } = Astro.props;
-const t = LIB.ru;
+const { lang, siteKey } = Astro.props;
+const t = LIB[lang];
+const p = prefix(lang);
 ---
 
 <div class="contain member-box">
@@ -44,16 +47,16 @@ const t = LIB.ru;
       <label class="all"><input type="checkbox" id="agreeAll" /> <strong>{t.agreeAll}</strong></label>
       <label>
         <input type="checkbox" class="agree-item" required /> {t.agreeTerms}
-        <a href="/ru/sub/pop_email.html" target="_blank" rel="noopener" class="more">{t.detail}</a>
+        <a href={`${p}/sub/pop_email.html`} target="_blank" rel="noopener" class="more">{t.detail}</a>
       </label>
       <label>
         <input type="checkbox" class="agree-item" required /> {t.agreePrivacy}
-        <a href="/ru/sub/pop_privacy.html" target="_blank" rel="noopener" class="more">{t.detail}</a>
+        <a href={`${p}/sub/pop_privacy.html`} target="_blank" rel="noopener" class="more">{t.detail}</a>
       </label>
     </div>
 
     <div class="row captcha">
-      <div class="cf-turnstile" data-sitekey={siteKey} data-callback="bkCaptchaDone" data-language="ru"></div>
+      <div class="cf-turnstile" data-sitekey={siteKey} data-callback="bkCaptchaDone" data-language={lang}></div>
     </div>
 
     <p class="msg" id="msg" role="alert" hidden></p>
@@ -63,12 +66,12 @@ const t = LIB.ru;
     </div>
   </form>
 
-  <p class="alt"><a href="/ru/member/login">{t.toLogin}</a></p>
+  <p class="alt"><a href={`${p}/member/login`}>{t.toLogin}</a></p>
 </div>
 
 <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
 
-<script is:inline define:vars={{ M: {
+<script is:inline define:vars={{ LOGIN_URL: `${p}/member/login`, M: {
   required: t.required, mismatch: t.pwMismatch, short: t.pwTooShort, taken: t.idTaken,
   idRule: t.idRule, captcha: t.captchaNeeded, captchaFail: t.captchaFailed,
   joined: t.joined, error: t.serverError
@@ -127,7 +130,7 @@ const t = LIB.ru;
 
         if (j.ok) {
           show(M.joined, true);
-          setTimeout(function () { location.href = '/ru/member/login'; }, 1200);
+          setTimeout(function () { location.href = LOGIN_URL; }, 1200);
           return;
         }
 

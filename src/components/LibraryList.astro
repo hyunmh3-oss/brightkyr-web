@@ -1,12 +1,15 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { LIB, LIB_CATS } from '../i18n/library';
+import { prefix, type Lang } from '../i18n/nav';
 
 export interface Props {
+  lang: Lang;
   posts: CollectionEntry<'library'>[];
 }
-const { posts } = Astro.props;
-const t = LIB.ru;
+const { lang, posts } = Astro.props;
+const t = LIB[lang];
+const p = prefix(lang);
 
 /**
  * 원본과 같이 한 쪽에 10건씩 보여준다.
@@ -73,7 +76,7 @@ const cats = [...LIB_CATS.filter((c) => used.has(c)), ...[...used].filter((c) =>
           <td>{isNotice(e) ? <span class="label">{t.notice}</span> : e.data.no}</td>
           <td class="cate">{e.data.category}</td>
           <td class="subject">
-            <a href={`/ru/library/${e.data.idx}`} title={e.data.title}>{e.data.title}</a>
+            <a href={`${p}/library/${e.data.idx}`} title={e.data.title}>{e.data.title}</a>
             {e.data.attachments.length > 0 && (
               <img src="/images/bbs/icon_file.png" alt={t.attach} class="file-icon" />
             )}

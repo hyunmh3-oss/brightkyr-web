@@ -15,7 +15,13 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/ru/library", "/ru/library/*", "/api/*"]
+    "run_worker_first": [
+      "/library", "/library/*",
+      "/en/library", "/en/library/*",
+      "/ky/library", "/ky/library/*",
+      "/ru/library", "/ru/library/*",
+      "/api/*"
+    ]
   },
 
   // 회원·세션·내려받기 기록

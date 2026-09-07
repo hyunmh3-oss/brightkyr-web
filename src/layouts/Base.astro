@@ -158,14 +158,15 @@ const fontCss: Record<Lang, string[]> = {
           {/*
             회원 로그인 링크 — 원본과 같은 자리(.top-member, 헤더 오른쪽 위)에 둔다.
             CSS 는 원본 layout.css 에 이미 들어 있다 (position:absolute; top:5px; right:0).
-            자료실이 러시아어판에만 있으므로 한국어에서도 러시아어 로그인 화면으로 보낸다.
+            원본과 같이 자료실 메뉴가 있는 한국어·러시아어에만 나온다.
+            보던 언어의 로그인 화면으로 간다 (원본은 한국어에서도 러시아어판으로 넘어갔다).
             로그인 여부는 브라우저에서 확인해 바꿔 넣는다 (정적 페이지라 서버가 모른다).
           */}
           {(lang === 'ko' || lang === 'ru') && (
-            <div class="top-member" data-lang={lang}>
+            <div class="top-member" data-lang={lang} data-home={p || '/'}>
               <ul>
-                <li class="m-login"><a href="/ru/member/login">{lang === 'ko' ? '로그인' : 'Войти (Login)'}</a></li>
-                <li class="m-join"><a href="/ru/member/join">{lang === 'ko' ? '회원가입' : 'Присоединиться (Join)'}</a></li>
+                <li class="m-login"><a href={`${p}/member/login`}>{lang === 'ko' ? '로그인' : 'Войти (Login)'}</a></li>
+                <li class="m-join"><a href={`${p}/member/join`}>{lang === 'ko' ? '회원가입' : 'Присоединиться (Join)'}</a></li>
                 <li class="m-logout" hidden><a href="javascript:;">{lang === 'ko' ? '로그아웃' : 'Выйти (Logout)'}</a></li>
               </ul>
             </div>
@@ -248,7 +249,7 @@ const fontCss: Record<Lang, string[]> = {
             out.addEventListener('click', function (e) {
               e.preventDefault();
               fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' })
-                .then(function () { location.href = box.getAttribute('data-lang') === 'ko' ? '/' : '/ru/'; });
+                .then(function () { location.href = box.getAttribute('data-home'); });
             });
           })
           .catch(function () {});

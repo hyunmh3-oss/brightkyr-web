@@ -33,8 +33,20 @@ const SESSION_DAYS = 14;
 const PBKDF2_ITERATIONS = 100_000;
 /** 로그인 실패가 이 횟수를 넘으면 보안문자를 요구한다 */
 const CAPTCHA_AFTER_FAILS = 3;
-/** 자료실 페이지 경로 (러시아어판에만 있다) */
-const LIB_PREFIX = '/ru/library';
+/**
+ * 자료실 경로. 자료는 러시아어뿐이지만 화면 껍데기는 보던 언어를 따라가므로
+ * 4개 언어 모두에 자료실이 있다.
+ *   /library  /en/library  /ky/library  /ru/library
+ */
+const LIB_PATH = /^\/(?:(en|ky|ru)\/)?library(?:\/|$)/;
+
+/** 요청 경로에서 자료실 부분을 떼어낸다. 자료실이 아니면 null. */
+function libraryPart(path: string): { prefix: string; rest: string } | null {
+  const m = LIB_PATH.exec(path);
+  if (!m) return null;
+  const prefix = m[1] ? `/${m[1]}` : '';
+  return { prefix, rest: path.slice(`${prefix}/library`.length) };
+}
 
 // ── 도구 ────────────────────────────────────────────────
 const enc = new TextEncoder();
@@ -285,23 +297,25 @@ export default {
       return json(me ? { ok: true, name: me.name, username: me.username } : { ok: false });
     }
 
-    // ── 첨부 파일 ────────────────────────────
-    if (path.startsWith(`${LIB_PREFIX}/file/`)) {
-      const key = decodeURIComponent(path.slice(`${LIB_PREFIX}/file/`.length));
-      // 다른 곳을 넘겨다보지 못하게 자료실 안으로 제한한다
-      if (!key.startsWith('library/') || key.includes('..')) {
-        return new Response('Bad Request', { status: 400 });
+    // ── 자료실 (첨부 파일 · 페이지) ──────────
+    const lib = libraryPart(path);
+    if (lib) {
+      // 첨부 파일: /{언어}/library/file/<키>
+      if (lib.rest.startsWith('/file/')) {
+        const key = decodeURIComponent(lib.rest.slice('/file/'.length));
+        // 다른 곳을 넘겨다보지 못하게 자료실 안으로 제한한다
+        if (!key.startsWith('library/') || key.includes('..')) {
+          return new Response('Bad Request', { status: 400 });
+        }
+        return handleFile(request, env, key);
       }
-      return handleFile(request, env, key);
-    }
 
-    // ── 자료실 페이지 ────────────────────────
-    if (path === LIB_PREFIX || path.startsWith(`${LIB_PREFIX}/`)) {
+      // 목록·글 보기: 로그인한 사람에게만
       const me = await currentMember(request, env);
       if (!me) {
-        // 로그인 화면으로 보내되, 돌아올 곳을 기억해 둔다
+        // 로그인 화면으로 보내되, 돌아올 곳과 보던 언어를 유지한다
         const back = encodeURIComponent(path + url.search);
-        return Response.redirect(`${url.origin}/ru/member/login?next=${back}`, 302);
+        return Response.redirect(`${url.origin}${lib.prefix}/member/login?next=${back}`, 302);
       }
       return env.ASSETS.fetch(request);
     }

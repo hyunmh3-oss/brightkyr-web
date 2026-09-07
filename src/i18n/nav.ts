@@ -56,13 +56,12 @@ export const NAV: Record<Lang, NavItem[]> = {
         { label: '사회적 영향', href: '/social' },
       ],
     },
-    // 자료 97건이 전부 러시아어라 자료실은 러시아어판에만 둔다.
-    // 원본 한국어 메뉴도 러시아어판 자료실로 연결돼 있었다.
+    // 자료 내용은 러시아어지만 화면 껍데기는 보던 언어를 따라간다.
+    // (원본은 한국어 메뉴가 러시아어판으로 넘어가 버렸는데, 그건 고쳤다.)
     {
       label: '자료실',
-      href: '/ru/library',
-      abs: true,
-      children: [{ label: '자료실', href: '/ru/library', abs: true }],
+      href: '/library',
+      children: [{ label: '자료실', href: '/library' }],
     },
   ],
 
