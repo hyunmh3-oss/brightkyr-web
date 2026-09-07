@@ -89,8 +89,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false,
-          hint: '넣으면 본문 맨 위에 영상이 뜹니다 (예: https://youtu.be/xxxxxxxx)' }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -128,7 +133,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -166,7 +177,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -204,7 +221,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -242,7 +265,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -280,7 +309,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -318,7 +353,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부
@@ -356,7 +397,13 @@ collections:
       - { name: author, label: 작성자, widget: string, default: '관리자' }
       - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
       - { name: hits, label: 조회수, widget: string, default: '0', required: false }
-      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: youtube
+        label: '유튜브 주소'
+        label_singular: 주소
+        widget: list
+        required: false
+        hint: '넣으면 본문 맨 위에 영상이 뜹니다. + 를 눌러 여러 개 넣을 수 있습니다'
+        field: { name: url, label: 주소, widget: string }
       - name: attachments
         label: 첨부파일
         label_singular: 첨부

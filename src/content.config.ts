@@ -15,8 +15,12 @@ const postSchema = z.object({
   attachments: z
     .array(z.object({ name: z.string(), file: z.string() }))
     .default([]),
-  /** YouTube 주소 — 원본 mp4 첨부를 대체 (보류작업.md 참고) */
-  youtube: z.string().default(''),
+  /**
+   * YouTube 주소 — 원본 mp4 첨부를 대체한다.
+   * 한 글에 영상이 여러 개 붙는 경우가 있어 여러 줄도 받는다.
+   * (관리자 화면에서는 항목을 추가하는 목록으로 보인다.)
+   */
+  youtube: z.union([z.string(), z.array(z.string())]).default(''),
 });
 
 const news = defineCollection({
