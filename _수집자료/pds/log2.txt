@@ -5,3 +5,142 @@
 받음 b_idx=11 idx=213 939.8KB  Data Skills with Excel & Google Sheets.pdf
 받음 b_idx=12 idx=144 5,977.5KB  JASP для анализа данных.pdf
 받음 b_idx=12 idx=214 5,990.7KB  JASP for Data Analysis.pdf
+받음 b_idx=13 idx=145 221.1KB  Ускоренная программа RN-BSN и обзор учебного плана.pdf
+받음 b_idx=13 idx=215 221.1KB  Accelerated RN-BSN & Program Review.pdf
+받음 b_idx=14 idx=146 258.9KB  Реализация BSN и оценка качества.pdf
+받음 b_idx=14 idx=216 199.4KB  BSN Implementation and Quality Assessment.pdf
+받음 b_idx=15 idx=147 1,047.6KB  Bridging Nursing Research and Policy-Связь исследований в сестринском и акушерском деле с политикой.
+받음 b_idx=15 idx=217 1,047.6KB  Bridging Nursing Research and Policy-Связь исследований в сестринском и акушерском деле с политикой.
+받음 b_idx=16 idx=148 1,031.5KB  Supporting Nurse Researchers A Case Study-Поддержка медсестер-исследователей_тематическое исследован
+받음 b_idx=16 idx=218 1,031.5KB  Supporting Nurse Researchers A Case Study-Поддержка медсестер-исследователей_тематическое исследован
+받음 b_idx=17 idx=149 603.8KB  Research Skills in Kyrgyz Healthcare-Научные навыки в здравоохранении КР.pdf
+받음 b_idx=17 idx=219 603.8KB  Research Skills in Kyrgyz Healthcare-Научные навыки в здравоохранении КР.pdf
+받음 b_idx=18 idx=150 171.1KB  Diabetes Care Innovation Through Research-Инновации в лечении диабета через исследования.pdf
+받음 b_idx=18 idx=220 171.1KB  Diabetes Care Innovation Through Research-Инновации в лечении диабета через исследования.pdf
+받음 b_idx=19 idx=151 238.6KB  Emergency Department-Отделение неотложной помощи.pdf
+받음 b_idx=19 idx=221 238.6KB  Emergency Department-Отделение неотложной помощи.pdf
+받음 b_idx=2 idx=133 369.2KB  Nursing Competencies and Needs-Компетенции и потребности в сестринском деле.pdf
+받음 b_idx=2 idx=208 369.2KB  Nursing Competencies and Needs-Компетенции и потребности в сестринском деле.pdf
+받음 b_idx=20 idx=152 438.6KB  Leadership in Nursing Research-Лидерство в сестринских исследованиях.pdf
+받음 b_idx=20 idx=222 438.6KB  Leadership in Nursing Research-Лидерство в сестринских исследованиях.pdf
+받음 b_idx=21 idx=153 201.5KB  Participant Expectations & Aspirations-Ожидания и стремления участников.pdf
+받음 b_idx=21 idx=223 201.5KB  Participant Expectations & Aspirations-Ожидания и стремления участников.pdf
+받음 b_idx=22 idx=154 169.8KB  Hospital Care Research-Исследования стационарной медицинской помощи.pdf
+받음 b_idx=22 idx=224 169.8KB  Hospital Care Research-Исследования стационарной медицинской помощи.pdf
+받음 b_idx=23 idx=155 3,565.0KB  Nurses in Population Health-Роль медсестер в охране здоровья населения.pdf
+받음 b_idx=23 idx=225 3,565.0KB  Nurses in Population Health-Роль медсестер в охране здоровья населения.pdf
+받음 b_idx=24 idx=156 2,646.5KB  Innovation in Nursing Science-Инновации в науке о сестринском деле.pdf
+받음 b_idx=24 idx=226 2,646.5KB  Innovation in Nursing Science-Инновации в науке о сестринском деле.pdf
+받음 b_idx=25 idx=227 339.5KB  Master’s Program in Nursing at KSMA.pdf
+받음 b_idx=26 idx=158 299.9KB  Квалификации медсестер в системе здравоохранения Кыргызстана.pdf
+받음 b_idx=26 idx=228 306.8KB  Healthcare Qualifications for Nurses in Kyrgyzstan.pdf
+받음 b_idx=27 idx=159 108.2KB  Профстандарт медсестры_ уровни 6 и 7.pdf
+받음 b_idx=27 idx=229 110.7KB  Professional Standard for Registered Nurse_Levels 6 & 7.pdf
+받음 b_idx=28 idx=160 106.0KB  Магистратура по сестринскому делу.pdf
+받음 b_idx=28 idx=230 339.5KB  Master’s Program in Nursing at KSMA.pdf
+받음 b_idx=29 idx=161 212.7KB  Докторантура по сестринскому делу_ структура и направления.pdf
+받음 b_idx=29 idx=231 232.9KB  PhD in Nursing_Framework & Pathways.pdf
+받음 b_idx=3 idx=135 1,617.6KB  Отчет о программе бакалавриата по сестринскому делу.pdf
+받음 b_idx=30 idx=162 1,105.0KB  Primary Care Research-Исследования в первичной медико-санитарной помощи.pdf
+받음 b_idx=30 idx=232 1,105.0KB  Primary Care Research-Исследования в первичной медико-санитарной помощи.pdf
+받음 b_idx=31 idx=163 514.2KB  Rehabilitation Research-Исследования в области реабилитации.pdf
+받음 b_idx=31 idx=233 514.2KB  Rehabilitation Research-Исследования в области реабилитации.pdf
+받음 b_idx=32 idx=164 5,330.7KB  Professional Development and Nursing Research between Kyrgyzstan and Korea-Профессиональное развитие
+받음 b_idx=32 idx=234 5,330.7KB  Professional Development and Nursing Research between Kyrgyzstan and Korea-Профессиональное развитие
+받음 b_idx=33 idx=165 1,057.2KB  The Value of Nursing Science-Значение науки о сестринском деле.pdf
+받음 b_idx=33 idx=235 1,057.2KB  The Value of Nursing Science-Значение науки о сестринском деле.pdf
+받음 b_idx=34 idx=166 125.4KB  Разработка рабочей тетради по клинической практике.pdf
+받음 b_idx=34 idx=236 132.5KB  Clinical Practicum Workbook Development.pdf
+받음 b_idx=35 idx=167 142.1KB  Fundamentals of Nursing-Основы сестринского дела.pdf
+받음 b_idx=36 idx=168 249.3KB  First Aid-Первая помощь.pdf
+받음 b_idx=37 idx=169 215.1KB  Basic Nursing Care-Базовый уход.pdf
+받음 b_idx=38 idx=170 576.7KB  Surgical Diseases-Хирургические болезни.pdf
+받음 b_idx=39 idx=171 910.7KB  Medical Nursing-Сестринское дело в терапии.pdf
+받음 b_idx=40 idx=172 235.9KB  Surgical Nursing-Сестринское дело в хирургии.pdf
+받음 b_idx=41 idx=173 435.0KB  Faculty and Student Feedback-Мнение ППС и студентов.pdf
+받음 b_idx=42 idx=174 458.5KB  Health Assessment-Оценка состояния здоровья.pdf
+받음 b_idx=43 idx=175 1,537.7KB  Monitoring Educational Reforms-Мониторинг образовательных реформ.pdf
+받음 b_idx=44 idx=176 5,187.8KB  Curriculum Structure Analysis-Анализ структуры учебных программ.pdf
+받음 b_idx=45 idx=177 1,485.7KB  Resource Utilization in the Curriculum-Использование ресурсов в учебном процессе.pdf
+받음 b_idx=46 idx=178 1,221.4KB  Инновационные методы в симуляционном обучении медсестер.pdf
+받음 b_idx=46 idx=237 1,065.4KB  Innovative Methods in Simulation Nursing Education.pdf
+받음 b_idx=47 idx=179 137.9KB  Вклад медсестер в зависимости от опыта.pdf
+받음 b_idx=47 idx=238 150.9KB  Contributions of Nurses by Experience Level.pdf
+받음 b_idx=48 idx=180 204.4KB  Путь клинической зарегистрированной медсестры.pdf
+받음 b_idx=48 idx=239 186.2KB  Journey of a Clinical Registered Nurse.pdf
+받음 b_idx=49 idx=181 1,182.0KB  Аккредитация сестринского образования в Кыргызстане.pdf
+받음 b_idx=49 idx=240 1,255.4KB  Nursing Education Accreditation in Kyrgyzstan.pdf
+받음 b_idx=5 idx=137 223.2KB  Nurse Education and Continuous Development-Образование и непрерывное развитие медсестер.pdf
+받음 b_idx=50 idx=182 479.1KB  Лицензирование медсестер и госэкзамен в Корее.pdf
+받음 b_idx=50 idx=241 793.6KB  Nurse Licensing and National Exam in Korea.pdf
+받음 b_idx=51 idx=183 5,365.1KB  Карьерная лестница и роли медсестер.pdf
+받음 b_idx=51 idx=242 5,401.3KB  Clinical Ladder and Nurse Roles.pdf
+받음 b_idx=52 idx=184 140.4KB  Путь медсестры клинической практики.pdf
+받음 b_idx=52 idx=243 144.7KB  Journey of a Clinical Practice Nurse.pdf
+받음 b_idx=53 idx=185 546.3KB  Лицензирование и регистрация медсестер в Кыргызстане.pdf
+받음 b_idx=53 idx=244 450.9KB  Nurse Licensing and Registration in Kyrgyzstan.pdf
+받음 b_idx=54 idx=186 250.3KB  Аккредитация сестринского образования в Корее.pdf
+받음 b_idx=54 idx=245 308.1KB  Nursing Education Accreditation in Korea.pdf
+받음 b_idx=55 idx=187 313.4KB  Инновации в образовании и практике медсестер в Корее.pdf
+받음 b_idx=55 idx=246 308.4KB  Nursing Education and Practice Innovation in Korea.pdf
+받음 b_idx=56 idx=188 4,846.0KB  Состояние разработки учебного плана BSN.pdf
+받음 b_idx=56 idx=247 1,006.6KB  BSN Curriculum Development Status.pdf
+받음 b_idx=57 idx=189 285.7KB  Состояние и использование учебников по сестринскому делу.pdf
+받음 b_idx=57 idx=248 1,063.0KB  Nursing Textbook Status and Practice.pdf
+받음 b_idx=58 idx=191 921.7KB  Клинические навыки и преподавание в сестринском деле в Кыргызстане.pdf
+받음 b_idx=58 idx=249 931.6KB  Clinical Nursing Skills and Teaching in Kyrgyzstan.pdf
+받음 b_idx=59 idx=192 5,789.7KB  Мировые тенденции в клинических навыках медсестер.pdf
+받음 b_idx=59 idx=250 4,883.5KB  Global Trends in Clinical Nursing Skills.pdf
+받음 b_idx=6 idx=138 1,097.2KB  Поддержка ВОЗ сестринского дела в Кыргызстане.pdf
+받음 b_idx=6 idx=209 1,286.5KB  WHO Support for Nursing in Kyrgyzstan.pdf
+받음 b_idx=60 idx=193 648.7KB  Развитие магистратуры по сестринскому делу в КГМА.pdf
+받음 b_idx=60 idx=251 489.6KB  Master’s Program Development in Nursing at KSMA.pdf
+받음 b_idx=61 idx=194 383.1KB  Мировые тенденции в магистратуре по сестринскому делу.pdf
+받음 b_idx=61 idx=252 195.1KB  Global Trends in Master’s Nursing Education.pdf
+받음 b_idx=62 idx=195 357.7KB  Разработка и внедрение OSCE.pdf
+받음 b_idx=62 idx=253 975.3KB  OSCE Development and Implementation.pdf
+받음 b_idx=63 idx=196 222.6KB  Этика исследований и подготовка IRB.pdf
+받음 b_idx=63 idx=254 221.5KB  IRB Writing and Research Ethics.pdf
+받음 b_idx=64 idx=197 9,533.2KB  Оценка управления ресурсами и инфраструктурой.pdf
+받음 b_idx=64 idx=255 9,593.0KB  Facility and Resource Management Evaluation.pdf
+받음 b_idx=65 idx=198 9,462.9KB  Building Leadership in Global Health.pdf
+받음 b_idx=65 idx=256 9,462.9KB  Building Leadership in Global Health.pdf
+받음 b_idx=66 idx=199 8,442.5KB  ICT in Healthcare Education.pdf
+받음 b_idx=66 idx=257 8,442.5KB  ICT in Healthcare Education.pdf
+받음 b_idx=67 idx=200 252.4KB  Course Planning Workbook-Рабочая тетрадь по планированию курса.pdf
+받음 b_idx=68 idx=201 1,308.2KB  Сестринское образование в Кыргызстане (2021).pdf
+받음 b_idx=68 idx=258 1,325.0KB  Nursing Education in Kyrgyzstan (2021).pdf
+받음 b_idx=69 idx=202 6,364.5KB  Реформы сестринского образования в Кыргызстане (2021).pdf
+받음 b_idx=69 idx=259 6,645.4KB  Nursing Education Reforms in Kyrgyzstan (2021).pdf
+받음 b_idx=7 idx=139 391.7KB  Преодоление стереотипов в сестринском деле.pdf
+받음 b_idx=7 idx=210 361.7KB  Overcoming Stereotypes in Nursing.pdf
+받음 b_idx=70 idx=203 678.6KB  Учебный план по сестринскому делу в Корее (2019).pdf
+받음 b_idx=70 idx=260 820.4KB  Nursing Curriculum in Korea (2019).pdf
+받음 b_idx=71 idx=204 147.3KB  Коммуникация и сотрудничество.pdf
+받음 b_idx=71 idx=261 153.1KB  Communication & Cooperation.pdf
+받음 b_idx=74 idx=205 265.5KB  Effective Strategies for Utilizing Simulation_RUS.pptx
+받음 b_idx=74 idx=262 260.6KB  Effective Strategies for Utilizing Simulation.pptx
+받음 b_idx=75 idx=206 7,305.9KB  Concept Development_RUS.pptx
+받음 b_idx=75 idx=263 6,962.5KB  Concept Development.pptx
+받음 b_idx=78 idx=266 124,244.9KB  BK_Science Day .pdf
+받음 b_idx=79 idx=267 5,834.6KB  FDP_Nov all_RUS.pdf
+받음 b_idx=8 idx=140 2,902.6KB  Инновации для имиджа медсестер.pdf
+받음 b_idx=8 idx=211 2,999.2KB  Innovation for Nursing Image.pdf
+받음 b_idx=80 idx=272 16,860.0KB  JASP_HK_0515_RU Final.pptx
+받음 b_idx=80 idx=273 2.1KB  JASP file.csv
+받음 b_idx=81 idx=274 1,734.8KB  1. Begimai_Simulation training in geriatrics_RUS.pptx
+받음 b_idx=82 idx=275 12,193.6KB  2.1. Altynai_Management of Gastrointestinal Bleeding_revision_RUS.pptx
+받음 b_idx=83 idx=276 1,407.5KB  3. Sarvinoz_Trauma kit_RUS.pptx
+받음 b_idx=84 idx=277 135.6KB  4.1. Akylbek_Case based learning_revision_RUS.pptx
+받음 b_idx=85 idx=278 31,346.2KB  5. Ainura_Simulation phantom_RUS.pdf
+받음 b_idx=86 idx=279 4,458.6KB  6.1. Borubaeva Aizada_Intgerated CBL_RUS.pptx.pdf
+받음 b_idx=87 idx=280 192.9KB  1. Almaz Zhusupbekovich_AVN system_RUS.pptx.pdf
+받음 b_idx=88 idx=281 957.3KB  ★ 2.1 Sultashev A.Zh._Training nurses to improve the quality of counseling patients with diabetes me
+받음 b_idx=89 idx=282 1,248.1KB  ★1. Aizat_Report 1. Assessment of the scientific competence of nurses_RUS.pdf
+받음 b_idx=9 idx=141 697.5KB  Командная работа.pdf
+받음 b_idx=9 idx=207 681.9KB  Teamwork.pdf
+받음 b_idx=90 idx=283 239.2KB  ★3. Zamira_Concept Development of Nursing in Kyrgyzstan_RUS.pptx.pdf
+받음 b_idx=92 idx=286 62,137.9KB  1. 포럼영상_Видео_Реформы сестринского дела в Кыргызстане.mp4
+받음 b_idx=94 idx=288 83,180.6KB  2. 포럼영상_Видео_Роль семейной медсестры в сельской местности.mp4
+받음 b_idx=95 idx=289 29,526.1KB  3. 포럼영상_Видео_Клиническая медсестра нового типа.mp4
+받음 b_idx=96 idx=290 41,015.3KB  4. 포럼영상_Видео_Развитие сестринского образования.mp4

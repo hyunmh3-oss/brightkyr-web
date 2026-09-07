@@ -1,0 +1,416 @@
+# Bright Kyrgyzstan 관리자 화면 설정
+# 여기에 정의한 항목이 그대로 /admin 입력 화면에 나타납니다.
+#
+# 주의: 게시판 8개의 입력 항목은 일부러 반복해서 적어 두었습니다.
+#       YAML 앵커(&, *)를 목록 안에 쓰면 중첩 배열이 되어 CMS 가 읽지 못합니다.
+#       한 곳을 고치면 나머지 7곳도 같이 고쳐야 합니다.
+
+backend:
+  name: github
+  repo: hyunmh3-oss/brightkyr-web
+  branch: main
+  # GitHub 로그인을 중개하는 Cloudflare 인증 워커 (NURSphere 와 같은 것을 씁니다)
+  base_url: https://sveltia-cms-auth.hyunmh3.workers.dev
+
+# 관리자가 올린 이미지가 저장될 위치
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+site_url: /
+display_url: /
+
+locale: ko
+
+collections:
+  # ==================================================================
+  # 메인 팝업
+  # ==================================================================
+  - name: popups
+    label: 메인 팝업
+    label_singular: 팝업
+    folder: content/popups
+    create: true
+    identifier_field: title
+    slug: '{{year}}{{month}}-{{slug}}'
+    summary: '{{title}} — {{from}} ~ {{until}}'
+    sortable_fields: [from, until, title]
+    description: >-
+      메인 화면에 뜨는 팝업입니다. 게시 종료일이 지나면 다시 배포하지 않아도 저절로 사라집니다.
+      당장 내리고 싶으면 「띄우기」를 꺼 두세요.
+    fields:
+      - { name: title, label: '팝업 이름', widget: string,
+          hint: '관리용 이름입니다. 화면에는 이미지 설명(alt)으로만 쓰입니다' }
+      - { name: enabled, label: 띄우기, widget: boolean, default: true }
+      - { name: image, label: '팝업 이미지', widget: image }
+      - { name: link, label: '누르면 갈 곳', widget: string, required: false,
+          hint: '예: /news/74 · 비워 두면 눌러도 아무 일 없습니다' }
+      - { name: from, label: '게시 시작일', widget: string, required: false,
+          hint: 'YYYY-MM-DD · 비우면 바로 시작' }
+      - { name: until, label: '게시 종료일', widget: string, required: false,
+          hint: 'YYYY-MM-DD · 이 날까지 보이고 다음 날 사라집니다. 비우면 계속 보임' }
+      - name: langs
+        label: '보여줄 언어'
+        widget: select
+        multiple: true
+        required: false
+        hint: '아무것도 고르지 않으면 4개 언어 모두에 뜹니다'
+        options:
+          - { label: 한국어, value: ko }
+          - { label: English, value: en }
+          - { label: Кыргызча, value: ky }
+          - { label: Русский, value: ru }
+      - { name: width, label: '가로 (px)', widget: number, default: 520, value_type: int }
+      - { name: height, label: '세로 (px)', widget: number, default: 570, value_type: int }
+      - { name: left, label: '왼쪽에서 (px)', widget: number, default: 100, value_type: int }
+      - { name: top, label: '위에서 (px)', widget: number, default: 100, value_type: int }
+
+  # ==================================================================
+  # 뉴스 — 한국어
+  # ==================================================================
+  - name: news_ko
+    label: 뉴스 (한국어)
+    label_singular: 글
+    folder: content/news/ko
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ko }
+      - { name: kind, widget: hidden, default: news }
+      - { name: board, widget: hidden, default: news }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: '공지사항 / 해외언론 / 국내언론' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false,
+          hint: '넣으면 본문 맨 위에 영상이 뜹니다 (예: https://youtu.be/xxxxxxxx)' }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로. 한글이나 공백이 들어가면 배포가 실패합니다' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 뉴스 — 영문
+  # ==================================================================
+  - name: news_en
+    label: 뉴스 (영문)
+    label_singular: 글
+    folder: content/news/en
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: en }
+      - { name: kind, widget: hidden, default: news }
+      - { name: board, widget: hidden, default: news_en }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'Notice / International / Korean' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 뉴스 — 키르기스어
+  # ==================================================================
+  - name: news_ky
+    label: 뉴스 (키르기스어)
+    label_singular: 글
+    folder: content/news/ky
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ky }
+      - { name: kind, widget: hidden, default: news }
+      - { name: board, widget: hidden, default: news_kg }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'Кулактандыруу / Чет элдик басмалар / Кореянын басмалары' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 뉴스 — 러시아어
+  # ==================================================================
+  - name: news_ru
+    label: 뉴스 (러시아어)
+    label_singular: 글
+    folder: content/news/ru
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ru }
+      - { name: kind, widget: hidden, default: news }
+      - { name: board, widget: hidden, default: news_ru }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'Доска объявлений / Зарубежные издательства / Корейские издательства' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 사회적 영향 — 한국어
+  # ==================================================================
+  - name: social_ko
+    label: 사회적 영향 (한국어)
+    label_singular: 글
+    folder: content/social/ko
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ko }
+      - { name: kind, widget: hidden, default: social }
+      - { name: board, widget: hidden, default: social }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'LUPIC / GES / Child Health' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 사회적 영향 — 영문
+  # ==================================================================
+  - name: social_en
+    label: 사회적 영향 (영문)
+    label_singular: 글
+    folder: content/social/en
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: en }
+      - { name: kind, widget: hidden, default: social }
+      - { name: board, widget: hidden, default: social_en }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'LUPIC / GES / Child Health' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 사회적 영향 — 키르기스어
+  # ==================================================================
+  - name: social_ky
+    label: 사회적 영향 (키르기스어)
+    label_singular: 글
+    folder: content/social/ky
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ky }
+      - { name: kind, widget: hidden, default: social }
+      - { name: board, widget: hidden, default: social_kg }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'LUPIC / GES / Коомдук таасир' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 사회적 영향 — 러시아어
+  # ==================================================================
+  - name: social_ru
+    label: 사회적 영향 (러시아어)
+    label_singular: 글
+    folder: content/social/ru
+    create: true
+    slug: '{{fields.idx}}'
+    summary: '[{{fields.idx}}] {{title}}'
+    sortable_fields: [idx, date, title]
+    fields:
+      - { name: lang, widget: hidden, default: ru }
+      - { name: kind, widget: hidden, default: social }
+      - { name: board, widget: hidden, default: social_ru }
+      - { name: title, label: 제목, widget: string }
+      - { name: idx, label: '글 번호 (주소에 쓰입니다)', widget: string,
+          hint: '이 게시판 안에서 겹치지 않는 숫자. 새 글은 가장 큰 번호 + 1' }
+      - { name: no, label: '목록 번호', widget: string, required: false,
+          hint: '비워 두면 「공지」 딱지가 붙고 목록 맨 위로 올라갑니다' }
+      - { name: category, label: 분류, widget: string, required: false,
+          hint: 'LUPIC / GES / Child Health' }
+      - { name: author, label: 작성자, widget: string, default: '관리자' }
+      - { name: date, label: 등록일, widget: string, hint: 'YYYY-MM-DD (예: 2026-09-07)' }
+      - { name: hits, label: 조회수, widget: string, default: '0', required: false }
+      - { name: youtube, label: '유튜브 주소', widget: string, required: false }
+      - name: attachments
+        label: 첨부파일
+        label_singular: 첨부
+        widget: list
+        required: false
+        summary: '{{fields.name}}'
+        fields:
+          - { name: name, label: '보여줄 이름', widget: string }
+          - { name: file, label: 파일, widget: file,
+              hint: '파일 이름은 영문·숫자로' }
+      - { name: body, label: 본문, widget: markdown }
+
+  # ==================================================================
+  # 고정 페이지 — 소개·협력기관·참여방법·프로젝트
+  # 주소가 메뉴와 묶여 있어 새로 만들거나 지울 수는 없고, 내용만 고칩니다.
+  # ==================================================================
+  - name: pages_ko
+    label: 고정 페이지 (한국어)
+    label_singular: 페이지
+    folder: content/pages/ko
+    create: false
+    delete: false
+    summary: '{{title}}'
+    fields: &page_fields
+      - { name: title, label: 제목, widget: string }
+      - { name: lang, widget: hidden }
+      - { name: pageKey, widget: hidden }
+      - { name: visual, label: '경로 표시', widget: string, required: false,
+          hint: '제목 아래 줄 (예: Home > 브라이트 키르기즈스탄 > 소개)' }
+      - { name: body, label: 본문, widget: markdown }
+
+  - name: pages_en
+    label: 고정 페이지 (영문)
+    label_singular: 페이지
+    folder: content/pages/en
+    create: false
+    delete: false
+    summary: '{{title}}'
+    fields: *page_fields
+
+  - name: pages_ky
+    label: 고정 페이지 (키르기스어)
+    label_singular: 페이지
+    folder: content/pages/ky
+    create: false
+    delete: false
+    summary: '{{title}}'
+    fields: *page_fields
+
+  - name: pages_ru
+    label: 고정 페이지 (러시아어)
+    label_singular: 페이지
+    folder: content/pages/ru
+    create: false
+    delete: false
+    summary: '{{title}}'
+    fields: *page_fields

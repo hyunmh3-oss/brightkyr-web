@@ -1,19 +1,21 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import type { Lang } from '../i18n/nav';
-import { POPUPS, POPUP_UI } from '../i18n/popup';
+import { POPUP_UI } from '../i18n/popup';
 
 export interface Props {
   lang: Lang;
+  popups: CollectionEntry<'popups'>[];
 }
-const { lang } = Astro.props;
+const { lang, popups } = Astro.props;
 
 /**
  * 메인 화면 팝업. 원본(백오피스 「팝업 관리」)과 같은 마크업·조작을 쓴다.
  * 게시 기간은 브라우저 날짜로 다시 확인하므로, 기간이 지나면
  * 다시 배포하지 않아도 저절로 안 뜬다.
  */
-const items = POPUPS.filter(
-  (p) => p.enabled && (!p.langs || p.langs.length === 0 || p.langs.includes(lang))
+const items = popups.filter(
+  (p) => p.data.enabled && (p.data.langs.length === 0 || p.data.langs.includes(lang))
 );
 ---
 
@@ -24,27 +26,27 @@ const items = POPUPS.filter(
         id={`popup-${p.id}`}
         class="admin-popup"
         data-popup-id={p.id}
-        data-from={p.from ?? ''}
-        data-until={p.until ?? ''}
-        style={`z-index:1000; position:absolute; left:${p.left}px; top:${p.top}px; background-color:#fff; display:none`}
+        data-from={p.data.from}
+        data-until={p.data.until}
+        style={`z-index:1000; position:absolute; left:${p.data.left}px; top:${p.data.top}px; background-color:#fff; display:none`}
       >
         <table border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
               <table
                 border="0"
-                width={p.width}
-                height={p.height}
+                width={p.data.width}
+                height={p.data.height}
                 cellpadding="0"
                 cellspacing="0"
                 style="table-layout:fixed;"
               >
                 <tr>
                   <td>
-                    {p.link ? (
-                      <a href={p.link}><img src={p.image} border="0" alt={p.alt} /></a>
+                    {p.data.link ? (
+                      <a href={p.data.link}><img src={p.data.image} border="0" alt={p.data.title} /></a>
                     ) : (
-                      <img src={p.image} border="0" alt={p.alt} />
+                      <img src={p.data.image} border="0" alt={p.data.title} />
                     )}
                   </td>
                 </tr>
@@ -79,7 +81,7 @@ const items = POPUPS.filter(
         }
         /** 'YYYY-MM-DD' 를 그날 0시(현지)로 */
         function day(s) {
-          var p = String(s).split('-');
+          var p = String(s || '').split('-');
           if (p.length !== 3) return null;
           return new Date(+p[0], +p[1] - 1, +p[2]);
         }

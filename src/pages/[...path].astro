@@ -74,6 +74,7 @@ const p = prefix(lang);
 const allPages = await getCollection('pages');
 const allNews = await getCollection('news');
 const allSocial = await getCollection('social');
+const allPopups = await getCollection('popups');
 
 // ── 공통 값 ────────────────────────────────
 let heading = '';
@@ -193,7 +194,7 @@ const libraryNotice = {
 {kind === 'home' ? (
   <Base lang={lang} path="/" bare={true}>
     <Home lang={lang} news={allNews} social={allSocial} />
-    <Popup lang={lang} />
+    <Popup lang={lang} popups={allPopups} />
   </Base>
 ) : (
   <Base lang={lang} title={title} heading={heading} breadcrumb={breadcrumb} path={currentPath} contClass={contClass} contStyle={contStyle}>

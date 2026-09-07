@@ -10,6 +10,12 @@ _수집자료/html/
 _수집자료/design/
 _수집자료/attach/
 
+# 자료실(회원 전용 게시판) 수집분.
+# 첨부에 100MB 넘는 영상이 있어 GitHub 이 거부한다.
+_수집자료/pds/attach/
+_수집자료/pds/detail/
+_수집자료/pds/list/
+
 .DS_Store
 Thumbs.db
 *.log

@@ -44,4 +44,29 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { news, social, pages };
+/**
+ * 메인 화면 팝업. 관리자 화면에서 추가·수정할 수 있도록 콘텐츠로 둔다.
+ * 파일 이름이 곧 팝업 구분자이며, 방문자의 '오늘하루 열지 않기' 기억에 쓰인다.
+ * 같은 이름을 재사용하면 지난번에 체크한 사람에게는 새 팝업도 안 보인다.
+ */
+const popups = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './content/popups' }),
+  schema: z.object({
+    title: z.string().default(''),
+    enabled: z.boolean().default(true),
+    image: z.string(),
+    /** 이미지를 누르면 갈 곳. 비우면 링크 없음 */
+    link: z.string().default(''),
+    width: z.number().default(520),
+    height: z.number().default(570),
+    left: z.number().default(100),
+    top: z.number().default(100),
+    /** 표시할 언어. 비우면 4개 언어 전부 */
+    langs: z.array(z.enum(['ko', 'en', 'ky', 'ru'])).default([]),
+    /** YYYY-MM-DD. 비우면 제한 없음 */
+    from: z.string().default(''),
+    until: z.string().default(''),
+  }),
+});
+
+export const collections = { news, social, pages, popups };
