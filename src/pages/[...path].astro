@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import BoardList from '../components/BoardList.astro';
 import BoardDetail from '../components/BoardDetail.astro';
 import Home from '../components/Home.astro';
+import Popup from '../components/Popup.astro';
 import { LANGS, prefix, BOARD_TITLE, NAV, type Lang } from '../i18n/nav';
 
 /**
@@ -192,6 +193,7 @@ const libraryNotice = {
 {kind === 'home' ? (
   <Base lang={lang} path="/" bare={true}>
     <Home lang={lang} news={allNews} social={allSocial} />
+    <Popup lang={lang} />
   </Base>
 ) : (
   <Base lang={lang} title={title} heading={heading} breadcrumb={breadcrumb} path={currentPath} contClass={contClass} contStyle={contStyle}>

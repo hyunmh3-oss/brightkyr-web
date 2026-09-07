@@ -1,0 +1,146 @@
+---
+import type { Lang } from '../i18n/nav';
+import { POPUPS, POPUP_UI } from '../i18n/popup';
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+/**
+ * 메인 화면 팝업. 원본(백오피스 「팝업 관리」)과 같은 마크업·조작을 쓴다.
+ * 게시 기간은 브라우저 날짜로 다시 확인하므로, 기간이 지나면
+ * 다시 배포하지 않아도 저절로 안 뜬다.
+ */
+const items = POPUPS.filter(
+  (p) => p.enabled && (!p.langs || p.langs.length === 0 || p.langs.includes(lang))
+);
+---
+
+{items.length > 0 && (
+  <>
+    {items.map((p) => (
+      <div
+        id={`popup-${p.id}`}
+        class="admin-popup"
+        data-popup-id={p.id}
+        data-from={p.from ?? ''}
+        data-until={p.until ?? ''}
+        style={`z-index:1000; position:absolute; left:${p.left}px; top:${p.top}px; background-color:#fff; display:none`}
+      >
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top">
+              <table
+                border="0"
+                width={p.width}
+                height={p.height}
+                cellpadding="0"
+                cellspacing="0"
+                style="table-layout:fixed;"
+              >
+                <tr>
+                  <td>
+                    {p.link ? (
+                      <a href={p.link}><img src={p.image} border="0" alt={p.alt} /></a>
+                    ) : (
+                      <img src={p.image} border="0" alt={p.alt} />
+                    )}
+                  </td>
+                </tr>
+              </table>
+              <div class="alertPopupClose">
+                <span class="today-no-popup">
+                  <input id={`popup-check-${p.id}`} type="checkbox" class="popup-today" />
+                  <label for={`popup-check-${p.id}`}>{POPUP_UI.today}</label>
+                </span>
+                <span class="btn-no-popup">
+                  <a href="javascript:;" class="alertNotice popup-close" title={POPUP_UI.closeTitle}>
+                    {POPUP_UI.close}
+                  </a>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    ))}
+
+    <script is:inline>
+      (function () {
+        function readCookie(name) {
+          var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+          return m ? m[2] : '';
+        }
+        function writeCookie(name, value, days) {
+          var d = new Date();
+          d.setTime(d.getTime() + days * 864e5);
+          document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+        }
+        /** 'YYYY-MM-DD' 를 그날 0시(현지)로 */
+        function day(s) {
+          var p = String(s).split('-');
+          if (p.length !== 3) return null;
+          return new Date(+p[0], +p[1] - 1, +p[2]);
+        }
+
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        Array.prototype.forEach.call(document.querySelectorAll('.admin-popup'), function (box) {
+          var id = box.getAttribute('data-popup-id');
+          var from = day(box.getAttribute('data-from'));
+          var until = day(box.getAttribute('data-until'));
+
+          // 게시 기간 밖이면 띄우지 않는다 (종료일 당일까지 표시)
+          if (from && today < from) return;
+          if (until && today > until) return;
+          // '오늘하루 열지 않기' 를 체크해 둔 사람에게는 띄우지 않는다
+          if (readCookie('POPUP_' + id) === 'done') return;
+
+          box.style.display = '';
+
+          var check = box.querySelector('.popup-today');
+          if (check) {
+            check.addEventListener('change', function () {
+              writeCookie('POPUP_' + id, check.checked ? 'done' : 'no', 1);
+            });
+          }
+          var close = box.querySelector('.popup-close');
+          if (close) {
+            close.addEventListener('click', function (e) {
+              e.preventDefault();
+              box.style.display = 'none';
+            });
+          }
+        });
+      })();
+    </script>
+
+    <style is:global>
+      /* 원본 팝업 스타일 그대로 */
+      .alertPopupClose {
+        background-color: #eeeeee;
+        margin: 15px 0 0 0;
+        padding: 10px;
+        font-weight: bold;
+        text-align: right;
+      }
+      .alertPopupClose:after { content: ''; display: block; clear: both; }
+      .alertPopupClose .today-no-popup { float: left; }
+      .alertPopupClose .btn-no-popup { float: right; }
+      .admin-popup img { max-width: 100%; height: auto; }
+
+      @media (max-width: 640px) {
+        .admin-popup {
+          top: 100px !important;
+          left: 50% !important;
+          width: 100%;
+          max-width: 90%;
+          transform: translateX(-50%);
+        }
+        .admin-popup table { width: 100% !important; height: auto !important; }
+      }
+    </style>
+  </>
+)}

@@ -1,0 +1,7 @@
+﻿첨부 대상: 148 건
+받음 b_idx=10 idx=142 2,893.1KB  Цифровые инструменты для повышения эффективности.pdf
+받음 b_idx=10 idx=212 2,873.8KB  Digital Tools for Work Efficiency.pdf
+받음 b_idx=11 idx=143 6,066.7KB  Навыки работы с данными в Excel и Google Таблицах.pdf
+받음 b_idx=11 idx=213 939.8KB  Data Skills with Excel & Google Sheets.pdf
+받음 b_idx=12 idx=144 5,977.5KB  JASP для анализа данных.pdf
+받음 b_idx=12 idx=214 5,990.7KB  JASP for Data Analysis.pdf

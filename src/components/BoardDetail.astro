@@ -39,6 +39,8 @@ function exists(rel: string) {
     return false;
   }
 }
+// 주소는 ASCII 로 둔다(Cloudflare 자산 목록이 URI 안전한 경로만 받는다).
+// 내려받을 때 저장되는 이름은 download 속성으로 원래 이름을 쓴다.
 const attachments = d.attachments.map((a) => ({ ...a, ok: exists(a.file) }));
 ---
 
@@ -62,7 +64,7 @@ const attachments = d.attachments.map((a) => ({ ...a, ok: exists(a.file) }));
       <div class="fileLayer" id="fileLayer">
         {attachments.map((a) =>
           a.ok ? (
-            <a href={a.file} title={a.name} download>
+            <a href={a.file} title={a.name} download={a.name}>
               <img src="/images/bbs/file_ico.gif" alt={v.attach} /> {a.name}
             </a>
           ) : (
